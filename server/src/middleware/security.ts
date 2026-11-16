@@ -17,6 +17,8 @@ export const securityHeaders = helmet({
         "'self'",
         "data:",
         "https:",
+        "https://*.arcgisonline.com",
+        "https://server.arcgisonline.com",
         "https://*.basemaps.cartocdn.com",
         "https://*.tile.openstreetmap.org",
         "https://unpkg.com"
@@ -25,6 +27,8 @@ export const securityHeaders = helmet({
         "'self'",
         CLIENT_ORIGIN,
         "https://*.open-meteo.com",
+        "https://*.arcgisonline.com",
+        "https://server.arcgisonline.com",
         "https://*.basemaps.cartocdn.com",
         "https://*.tile.openstreetmap.org",
         "https://unpkg.com"

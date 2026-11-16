@@ -106,12 +106,11 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
       scrollWheelZoom: false
     });
 
-    // Production-ready CartoDB Positron basemap tiles (no volunteer rate limits, compliant with OSM policy)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    // Production-ready Esri World Street Map basemap: completely free, NO API key required, NO watermarks, NO 403 blocks
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 19,
-      subdomains: 'abcd',
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>'
+        'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, METI, TomTom'
     }).addTo(map);
 
     const markersLayer = L.layerGroup().addTo(map);
