@@ -10,8 +10,10 @@ import { LoadingSkeleton, ErrorBanner, OfflineNotice, EmptyState } from './compo
 import { LocationItem, AirQualityApiResponse, WeatherData } from './types';
 import { Star } from 'lucide-react';
 
-// Lazy-load TrendsChart with Recharts to optimize initial bundle size (Section 8)
+// Lazy-load Charts & AI Components to optimize initial bundle size
 const TrendsChart = lazy(() => import('./components/TrendsChart'));
+const HistoricalTrends = lazy(() => import('./components/HistoricalTrends'));
+const AiHealthAssistant = lazy(() => import('./components/AiHealthAssistant'));
 
 const STORAGE_KEY_FAVORITES = 'urban_aqi_favorites_v1';
 
@@ -61,7 +63,7 @@ export const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
 
-  // Favorites state persisted in localStorage
+  // Favorites state persisted in localStorage and synced with database
   const [favorites, setFavorites] = useState<LocationItem[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_FAVORITES);
@@ -74,7 +76,44 @@ export const App: React.FC = () => {
     return [];
   });
 
-  // Save favorites to localStorage
+  // Sync bookmarks with backend DB on load
+  useEffect(() => {
+    fetch('/api/bookmarks')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.bookmarks && Array.isArray(data.bookmarks)) {
+          setFavorites((prev) => {
+            const map = new Map<string, LocationItem>();
+            prev.forEach((p) => map.set(`${p.latitude.toFixed(2)},${p.longitude.toFixed(2)}`, p));
+            data.bookmarks.forEach((b: any) => {
+              const key = `${Number(b.latitude).toFixed(2)},${Number(b.longitude).toFixed(2)}`;
+              if (!map.has(key)) {
+                map.set(key, {
+                  id: b.id || Math.random(),
+                  name: b.name,
+                  latitude: b.latitude,
+                  longitude: b.longitude,
+                  country: '',
+                  countryCode: '',
+                  timezone: 'UTC',
+                  displayName: b.displayName || b.name
+                });
+              }
+            });
+            const merged = Array.from(map.values());
+            try {
+              localStorage.setItem(STORAGE_KEY_FAVORITES, JSON.stringify(merged));
+            } catch {}
+            return merged;
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn('Backend bookmarks sync offline or unavailable:', err);
+      });
+  }, []);
+
+  // Save favorites to localStorage and backend database
   const toggleFavorite = (loc: LocationItem) => {
     setFavorites((prev) => {
       const exists = prev.some(
@@ -89,6 +128,23 @@ export const App: React.FC = () => {
       } catch (e) {
         console.warn('Failed to save favorites to localStorage:', e);
       }
+
+      // Sync with backend DB
+      if (exists) {
+        fetch(`/api/bookmarks/${loc.id}`, { method: 'DELETE' }).catch(() => {});
+      } else {
+        fetch('/api/bookmarks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: loc.name,
+            displayName: loc.displayName || loc.name,
+            latitude: loc.latitude,
+            longitude: loc.longitude
+          })
+        }).catch(() => {});
+      }
+
       return next;
     });
   };
@@ -241,6 +297,35 @@ export const App: React.FC = () => {
               guidance={airQuality.healthGuidance}
               category={airQuality.category}
             />
+
+            {/* Personalized AI Health Advisory Assistant */}
+            <Suspense
+              fallback={
+                <div className="bg-white rounded-2xl p-6 border border-slate-200 h-48 animate-pulse flex items-center justify-center text-slate-400 text-xs">
+                  Loading AI health assistant...
+                </div>
+              }
+            >
+              <AiHealthAssistant
+                aqi={airQuality.aqi}
+                category={airQuality.category}
+                dominantPollutant={airQuality.dominantPollutants[0] || 'PM2.5'}
+              />
+            </Suspense>
+
+            {/* Historical Trends & Analytics (7-day / 30-day interactive analysis) */}
+            <Suspense
+              fallback={
+                <div className="bg-white rounded-2xl p-6 border border-slate-200 h-72 animate-pulse flex items-center justify-center text-slate-400 text-xs">
+                  Loading historical trend models...
+                </div>
+              }
+            >
+              <HistoricalTrends
+                latitude={selectedLocation.latitude}
+                longitude={selectedLocation.longitude}
+              />
+            </Suspense>
 
             {/* Trends Chart & Forecast (Lazy-loaded with fallback) */}
             <Suspense

@@ -1,12 +1,15 @@
 import { Router, Request, Response, NextFunction } from 'express';
+import { z } from 'zod';
 import { validateQuery, geocodeQuerySchema, coordsQuerySchema } from '../middleware/validate.js';
 import { searchLocations, fetchRawAirQuality, fetchRawWeather } from '../services/openMeteo.js';
-import { calculateCpcbAqi } from '../aqi/calculator.js';
+import { calculateCpcbAqi, calculateSubIndex, getCategoryFromAqi } from '../aqi/calculator.js';
 import { calculateEpaSubIndex, getEpaCategory } from '../aqi/epaCalculator.js';
 import { EPA_CATEGORIES } from '../aqi/epaBreakpoints.js';
 import { getHealthGuidance } from '../aqi/healthGuidance.js';
 import { processTrends } from '../aqi/trends.js';
 import { appCache, AppCache } from '../services/cache.js';
+import { generateAiHealthAdvisory } from '../services/aiAdvisory.js';
+import { db } from '../services/db.js';
 import { AirQualityApiResponse, WeatherData } from '../types/index.js';
 
 export const apiRouter = Router();
@@ -200,3 +203,136 @@ apiRouter.get(
     }
   }
 );
+
+// Historical Multi-Day Trends endpoint
+const historicalTrendsSchema = coordsQuerySchema.extend({
+  days: z.coerce.number().min(1).max(30).default(7)
+});
+
+apiRouter.get(
+  '/historical-trends',
+  validateQuery(historicalTrendsSchema),
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const lat = Number(req.query.lat);
+      const lon = Number(req.query.lon);
+      const days = Number(req.query.days) || 7;
+
+      const roundedLat = AppCache.roundCoord(lat);
+      const roundedLon = AppCache.roundCoord(lon);
+      const cacheKey = `hist:${days}:${roundedLat}:${roundedLon}`;
+
+      const { data } = await appCache.fetchWithDeduplication(
+        cacheKey,
+        async () => {
+          const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&hourly=pm10,pm2_5,nitrogen_dioxide,ozone&past_days=${days}&forecast_days=0`;
+          const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
+          if (!response.ok) throw new Error('Failed to fetch historical model data');
+          const raw: any = await response.json();
+
+          const hourly = raw.hourly || {};
+          const dailyMap = new Map<string, { pm2_5: number[]; pm10: number[] }>();
+
+          (hourly.time || []).forEach((t: string, idx: number) => {
+            const dateStr = t.split('T')[0];
+            if (!dailyMap.has(dateStr)) dailyMap.set(dateStr, { pm2_5: [], pm10: [] });
+            const entry = dailyMap.get(dateStr)!;
+            if (hourly.pm2_5?.[idx] != null) entry.pm2_5.push(hourly.pm2_5[idx]);
+            if (hourly.pm10?.[idx] != null) entry.pm10.push(hourly.pm10[idx]);
+          });
+
+          const dailySeries = Array.from(dailyMap.entries()).map(([date, vals]) => {
+            const avgPm25 = vals.pm2_5.length ? Math.round(vals.pm2_5.reduce((a, b) => a + b, 0) / vals.pm2_5.length) : null;
+            const avgPm10 = vals.pm10.length ? Math.round(vals.pm10.reduce((a, b) => a + b, 0) / vals.pm10.length) : null;
+            const subPm25 = avgPm25 !== null ? calculateSubIndex('pm2_5', avgPm25)?.subIndex ?? null : null;
+            const subPm10 = avgPm10 !== null ? calculateSubIndex('pm10', avgPm10)?.subIndex ?? null : null;
+            const aqi = Math.max(subPm25 ?? 0, subPm10 ?? 0) || null;
+
+            return {
+              date,
+              avgPm25,
+              avgPm10,
+              aqi,
+              category: aqi ? getCategoryFromAqi(aqi) : null
+            };
+          });
+
+          return { days, series: dailySeries };
+        },
+        3600 // Cache 1 hour
+      );
+
+      res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// Generative AI Health Advisory endpoint
+const aiAdvisorySchema = z.object({
+  aqi: z.coerce.number().min(0).max(500),
+  category: z.string().max(40),
+  dominantPollutant: z.string().max(30),
+  userProfile: z.enum(['general', 'asthma', 'elderly', 'child', 'athlete']).default('general')
+});
+
+apiRouter.post(
+  '/ai/advisory',
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const parsed = aiAdvisorySchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({ error: 'Bad Request', details: parsed.error.issues });
+        return;
+      }
+
+      const { aqi, category, dominantPollutant, userProfile } = parsed.data;
+      const result = await generateAiHealthAdvisory(aqi, category, dominantPollutant, userProfile);
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+// Database Bookmarks endpoints
+apiRouter.get('/bookmarks', (req: Request, res: Response) => {
+  const userId = (req.query.userId as string) || 'anonymous';
+  const bookmarks = db.getBookmarks(userId);
+  res.json({ userId, bookmarks });
+});
+
+apiRouter.post('/bookmarks', (req: Request, res: Response) => {
+  const { userId = 'anonymous', name, latitude, longitude, displayName } = req.body || {};
+  if (!name || latitude == null || longitude == null) {
+    res.status(400).json({ error: 'Missing bookmark fields' });
+    return;
+  }
+  const item = db.saveBookmark(userId, { name, latitude, longitude, displayName: displayName || name });
+  res.status(201).json(item);
+});
+
+apiRouter.delete('/bookmarks/:id', (req: Request, res: Response) => {
+  const userId = (req.query.userId as string) || 'anonymous';
+  const bookmarkId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const success = db.deleteBookmark(userId, bookmarkId);
+  res.json({ success });
+});
+
+// Database Search History endpoints
+apiRouter.get('/history', (req: Request, res: Response) => {
+  const userId = (req.query.userId as string) || 'anonymous';
+  const history = db.getSearchHistory(userId);
+  res.json({ userId, history });
+});
+
+apiRouter.post('/history', (req: Request, res: Response) => {
+  const { userId = 'anonymous', query } = req.body || {};
+  if (!query || typeof query !== 'string') {
+    res.status(400).json({ error: 'Query string required' });
+    return;
+  }
+  const item = db.addSearchHistory(userId, query.trim());
+  res.status(201).json(item);
+});

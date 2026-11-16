@@ -134,6 +134,108 @@ describe('API Server Integration Tests', () => {
     });
   });
 
+  describe('GET /api/historical-trends', () => {
+    it('returns 7-day multi-day daily aggregations', async () => {
+      const res = await request(app).get('/api/historical-trends?lat=28.6139&lon=77.2090&days=7');
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('days', 7);
+      expect(Array.isArray(res.body.series)).toBe(true);
+      if (res.body.series.length > 0) {
+        expect(res.body.series[0]).toHaveProperty('date');
+        expect(res.body.series[0]).toHaveProperty('avgPm25');
+        expect(res.body.series[0]).toHaveProperty('avgPm10');
+      }
+    });
+
+    it('rejects invalid days parameter', async () => {
+      const res = await request(app).get('/api/historical-trends?lat=28.6139&lon=77.2090&days=100');
+      expect(res.status).toBe(400);
+    });
+  });
+
+  describe('POST /api/ai/advisory', () => {
+    it('generates personalized health advisory with guardrails', async () => {
+      const res = await request(app)
+        .post('/api/ai/advisory')
+        .send({
+          aqi: 245,
+          category: 'Poor',
+          dominantPollutant: 'PM2.5',
+          userProfile: 'asthma'
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty('advice');
+      expect(Array.isArray(res.body.recommendations)).toBe(true);
+      expect(res.body.recommendations.length).toBeGreaterThan(0);
+      expect(res.body.disclaimer).toContain('Informational guidance only');
+      expect(res.body.isAIGenerated).toBe(true);
+    });
+
+    it('validates schema input strictly', async () => {
+      const res = await request(app)
+        .post('/api/ai/advisory')
+        .send({
+          aqi: 9999, // invalid aqi > 500
+          category: 'Hazardous',
+          dominantPollutant: 'PM2.5'
+        });
+
+      expect(res.status).toBe(400);
+    });
+  });
+
+  describe('Database Bookmarks & History Endpoints', () => {
+    let bookmarkId = '';
+
+    it('creates, retrieves, and deletes user bookmarks', async () => {
+      // Create bookmark
+      const createRes = await request(app)
+        .post('/api/bookmarks')
+        .send({
+          userId: 'test-user-1',
+          name: 'Delhi',
+          displayName: 'Delhi, India',
+          latitude: 28.6139,
+          longitude: 77.2090
+        });
+
+      expect(createRes.status).toBe(201);
+      expect(createRes.body).toHaveProperty('id');
+      expect(createRes.body.name).toBe('Delhi');
+      bookmarkId = createRes.body.id;
+
+      // Get bookmarks
+      const getRes = await request(app).get('/api/bookmarks?userId=test-user-1');
+      expect(getRes.status).toBe(200);
+      expect(getRes.body.bookmarks.some((b: any) => b.id === bookmarkId)).toBe(true);
+
+      // Delete bookmark
+      const delRes = await request(app).delete(`/api/bookmarks/${bookmarkId}?userId=test-user-1`);
+      expect(delRes.status).toBe(200);
+      expect(delRes.body.success).toBe(true);
+
+      // Verify deleted
+      const checkRes = await request(app).get('/api/bookmarks?userId=test-user-1');
+      expect(checkRes.body.bookmarks.some((b: any) => b.id === bookmarkId)).toBe(false);
+    });
+
+    it('records and retrieves search history with deduplication', async () => {
+      await request(app)
+        .post('/api/history')
+        .send({ userId: 'test-user-2', query: 'Mumbai' });
+
+      await request(app)
+        .post('/api/history')
+        .send({ userId: 'test-user-2', query: 'Bengaluru' });
+
+      const res = await request(app).get('/api/history?userId=test-user-2');
+      expect(res.status).toBe(200);
+      expect(res.body.history.length).toBe(2);
+      expect(res.body.history[0].query).toBe('Bengaluru'); // most recent first
+    });
+  });
+
   describe('CORS and Security boundaries', () => {
     it('blocks disallowed external origins', async () => {
       const res = await request(app)

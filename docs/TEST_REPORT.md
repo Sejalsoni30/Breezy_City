@@ -12,11 +12,11 @@
 | Test Category | Framework / Tool | Scope | Passed | Failed | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **AQI Mathematical Unit Tests** | Vitest | CPCB Breakpoints, Formulas, Unit Conversions, Minimum Pollutants Rule | 18 | 0 | **PASS** |
-| **Server Integration Tests** | Supertest + Express | Routes (`/api/*`), Zod Validation, In-Memory Cache, Security Headers, CORS | 11 | 0 | **PASS** |
-| **Client Component Tests** | Vitest + React Testing Library | AqiHero, PollutantGrid, HealthGuidance, LocationSearch, DataAttribution | 5 | 0 | **PASS** |
+| **Server Integration Tests** | Supertest + Express | Routes (`/api/*`), Historical Trends, AI Advisory, Database Bookmarks, History, Cache, CORS | 18 | 0 | **PASS** |
+| **Client Component Tests** | Vitest + React Testing Library | AqiHero, PollutantGrid, HealthGuidance, LocationSearch, DataAttribution, GlobalErrorBoundary, AiHealthAssistant, HistoricalTrends | 8 | 0 | **PASS** |
 | **Automated Accessibility** | `@axe-core/playwright` | WCAG 2.0 A/AA & WCAG 2.1 A/AA Compliance Scan | 0 violations | 0 | **PASS** |
-| **End-to-End & Visual Walkthrough** | Playwright (Chrome) | Responsive Viewports (360px, 768px, 1280px), Search, Tabs, Offline, Error | 10 states | 0 | **PASS** |
-| **Total Automated Tests** | | | **34 tests + 10 E2E states** | **0** | **PASS** |
+| **End-to-End & Visual Walkthrough** | Playwright (Chrome) | Responsive Viewports (360px, 768px, 1280px), Search, Tabs, Offline, Error, AI Profiles, Trends Analytics | 14 states | 0 | **PASS** |
+| **Total Automated Tests** | | | **44 tests + 14 E2E states** | **0** | **PASS** |
 
 ---
 

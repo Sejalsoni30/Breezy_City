@@ -123,6 +123,11 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
     setIsOpen(false);
     setResults([]);
     onSelectLocation(item);
+    fetch('/api/history', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query: item.name })
+    }).catch(() => {});
   };
 
   // Browser Geolocation handler

@@ -1,11 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import { AqiHero } from '../src/components/AqiHero';
 import { PollutantGrid } from '../src/components/PollutantGrid';
 import { HealthGuidance } from '../src/components/HealthGuidance';
 import { DataAttribution } from '../src/components/DataAttribution';
 import { LocationSearch } from '../src/components/LocationSearch';
+import { GlobalErrorBoundary } from '../src/components/GlobalErrorBoundary';
+import { AiHealthAssistant } from '../src/components/AiHealthAssistant';
+import { HistoricalTrends } from '../src/components/HistoricalTrends';
 import { AirQualityApiResponse } from '../src/types';
 
 const mockAqiData: AirQualityApiResponse = {
@@ -96,6 +99,55 @@ const mockAqiData: AirQualityApiResponse = {
 };
 
 describe('Client UI Component Tests', () => {
+  const originalFetch = global.fetch;
+
+  beforeAll(() => {
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes('/api/ai/advisory')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              source: 'Clinical Environmental Health Matrix',
+              advice: 'Air is polluted. Reduce prolonged outdoor running.',
+              recommendations: [
+                'Wear an N95 mask outdoors.',
+                'Run indoor HEPA air filtration.',
+                'Keep windows closed.'
+              ],
+              disclaimer: 'Informational guidance only, not medical advice.',
+              isAIGenerated: true
+            })
+        });
+      }
+      if (url.includes('/api/historical-trends')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve({
+              days: 7,
+              series: [
+                {
+                  date: '2026-11-15',
+                  avgPm25: 110,
+                  avgPm10: 160,
+                  aqi: 275,
+                  category: 'Poor'
+                }
+              ]
+            })
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({})
+      });
+    }) as any;
+  });
+
+  afterAll(() => {
+    global.fetch = originalFetch;
+  });
   describe('AqiHero Component', () => {
     it('renders location, category badge, and CPCB AQI value', () => {
       render(<AqiHero data={mockAqiData} locationName="Delhi, NCT of Delhi, India" />);
@@ -172,6 +224,59 @@ describe('Client UI Component Tests', () => {
 
       const geoButton = screen.getByRole('button', { name: /Use My Location/i });
       expect(geoButton).toBeInTheDocument();
+    });
+  });
+
+  describe('GlobalErrorBoundary Component', () => {
+    it('catches render errors and displays accessible alert with retry controls', () => {
+      // Component that throws
+      const ProblemChild = () => {
+        throw new Error('Test crash in child component');
+      };
+
+      // Suppress console.error in test output for intentional error
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+      render(
+        <GlobalErrorBoundary>
+          <ProblemChild />
+        </GlobalErrorBoundary>
+      );
+
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+      expect(screen.getByText(/Something went wrong/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Try re-rendering/i })).toBeInTheDocument();
+
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe('AiHealthAssistant Component', () => {
+    it('renders sensitive group profiles and disclaimers', () => {
+      render(
+        <AiHealthAssistant
+          aqi={285}
+          category="Poor"
+          dominantPollutant="PM2.5"
+        />
+      );
+
+      expect(screen.getByText(/Personalized AI Health Advisory/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Asthma/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Elderly/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Children/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Athletes/i })).toBeInTheDocument();
+    });
+  });
+
+  describe('HistoricalTrends Component', () => {
+    it('renders interval toggle buttons and table view switch', () => {
+      render(<HistoricalTrends latitude={28.65} longitude={77.23} />);
+
+      expect(screen.getByText(/Historical AQI Trends/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Past 7 Days/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Past 30 Days/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Table View/i })).toBeInTheDocument();
     });
   });
 });
