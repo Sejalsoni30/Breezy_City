@@ -1,11 +1,14 @@
 # Urban Air Quality Assistant
 
-[![CI Tests](https://img.shields.io/badge/tests-34%20passed-success)](file:///docs/TEST_REPORT.md)
+[![Live Demo](https://img.shields.io/badge/live_demo-online-brightgreen)](https://breezy-city-51hh.onrender.com)
+[![CI Tests](https://img.shields.io/badge/tests-35%20passed-success)](file:///docs/TEST_REPORT.md)
 [![Accessibility](https://img.shields.io/badge/accessibility-WCAG%202.1%20AA%20(0%20violations)-blue)](file:///docs/TEST_REPORT.md)
 [![AQI Standard](https://img.shields.io/badge/standard-India%20CPCB%20NAQI-orange)](https://cpcb.nic.in/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 An intelligent, accessible, and scientifically grounded air quality platform built to provide real-time atmospheric intelligence, India CPCB National Air Quality Index (NAQI) calculations, individual pollutant breakdowns, vulnerable group health advisories, and contextual weather metrics.
+
+🌐 **Live Deployment**: [https://breezy-city-51hh.onrender.com](https://breezy-city-51hh.onrender.com)
 
 > **Competition Context**: Submitted for **[Challenge 6] Urban Air Quality Assistant**, Hack2Skill Prompt Wars. Product architecture, implementation, and branding are independent and production-ready.
 
