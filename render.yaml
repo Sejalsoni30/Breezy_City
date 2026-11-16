@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: breezy-city-aqi
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CACHE_TTL_SECONDS
+        value: 900
+      - key: RATE_LIMIT_MAX
+        value: 100

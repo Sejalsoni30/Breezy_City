@@ -127,11 +127,34 @@ Open [http://localhost:3001](http://localhost:3001) in your browser.
 
 ### 6. Run Test Suite
 ```bash
-# Runs all 34 automated unit, integration, and component tests
+# Runs all 35 automated unit, integration, and component tests
 npm test
 
 # Run Playwright E2E and Axe accessibility verification
 node scripts/verifyAndScreenshot.mjs
+```
+
+---
+
+## 🚀 One-Click Cloud Deployment
+
+### Option A: Deploy to Render (Recommended - Free Tier)
+1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New +** > **Web Service**.
+2. Connect your GitHub repository: `https://github.com/Sejalsoni30/Breezy_City`.
+3. Configure the service:
+   - **Environment**: `Node`
+   - **Build Command**: `npm install && npm run build`
+   - **Start Command**: `npm start`
+   - **Plan**: `Free`
+4. Click **Create Web Service**. Your live app will be published on a permanent HTTPS URL (e.g., `https://breezy-city.onrender.com`).
+
+### Option B: Deploy with Docker
+```bash
+# Build the production Docker container
+docker build -t breezy-city-aqi .
+
+# Run container on port 3001
+docker run -p 3001:3001 breezy-city-aqi
 ```
 
 ---
