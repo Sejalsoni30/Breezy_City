@@ -1,226 +1,231 @@
-# Urban Air Quality Assistant
+<div align="center">
 
-[![Live Demo](https://img.shields.io/badge/live_demo-online-brightgreen)](https://breezy-city-51hh.onrender.com)
-[![CI Tests](https://img.shields.io/badge/tests-44%20passed-success)](file:///docs/TEST_REPORT.md)
-[![Accessibility](https://img.shields.io/badge/accessibility-WCAG%202.1%20AA%20(100%25%20Axe%20Clean)-blue)](file:///docs/TEST_REPORT.md)
-[![AQI Standard](https://img.shields.io/badge/standard-India%20CPCB%20NAQI-orange)](https://cpcb.nic.in/)
-[![AI Advisory](https://img.shields.io/badge/AI%20Assistant-Gemini%201.5%20%2B%20Clinical%20Guardrails-purple)](file:///server/src/services/aiAdvisory.ts)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+# 🍃 BreezyCity • Urban Air Quality Assistant
+### Intelligent Real-Time Atmospheric Intelligence, India CPCB NAQI Engine & GIS Analytics
 
-An intelligent, accessible, and scientifically grounded air quality platform built to provide real-time atmospheric intelligence, India CPCB National Air Quality Index (NAQI) calculations, individual pollutant breakdowns, vulnerable group health advisories, and contextual weather metrics.
+[![Live Deployment](https://img.shields.io/badge/Live%20Demo-Online-059669?style=for-the-badge&logo=render&logoColor=white)](https://breezy-city-51hh.onrender.com)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Sejalsoni30/Breezy_City)
+[![Hack2Skill Submission](https://img.shields.io/badge/Challenge%206-Prompt%20Wars-6366f1?style=for-the-badge&logo=google&logoColor=white)](https://breezy-city-51hh.onrender.com)
 
-🌐 **Live Deployment**: [https://breezy-city-51hh.onrender.com](https://breezy-city-51hh.onrender.com)
+<p align="center">
+  <img src="https://img.shields.io/badge/Tests-44%20Passed-10b981?style=flat-square&logo=vitest&logoColor=white" alt="Tests" />
+  <img src="https://img.shields.io/badge/WCAG%202.1%20AA-100%25%20Axe%20Clean-3b82f6?style=flat-square&logo=w3c&logoColor=white" alt="Accessibility" />
+  <img src="https://img.shields.io/badge/Lighthouse-100%2F100-34d399?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse" />
+  <img src="https://img.shields.io/badge/Standard-India%20CPCB%20NAQI-f97316?style=flat-square" alt="CPCB NAQI" />
+  <img src="https://img.shields.io/badge/AI%20Assistant-Gemini%201.5%20Flash-8b5cf6?style=flat-square&logo=google&logoColor=white" alt="Gemini AI" />
+  <img src="https://img.shields.io/badge/Mapping-Leaflet%20%2B%20Esri%20GIS-0284c7?style=flat-square&logo=leaflet&logoColor=white" alt="Leaflet" />
+  <img src="https://img.shields.io/badge/License-MIT-gray?style=flat-square" alt="MIT" />
+</p>
 
-> **Competition Context**: Submitted for **[Challenge 6] Urban Air Quality Assistant**, Hack2Skill Prompt Wars. Product architecture, implementation, and branding are independent and production-ready.
+<p align="center">
+  <a href="https://breezy-city-51hh.onrender.com"><strong>Explore Live Web App »</strong></a>
+  <br />
+  <a href="#-visual-showcase">Visual Showcase</a> •
+  <a href="#-key-features">Key Features</a> •
+  <a href="#-cpcb-naqi-standard-matrix">CPCB Standard</a> •
+  <a href="#-architecture--data-flow">Architecture</a> •
+  <a href="#-api-endpoints">API Docs</a> •
+  <a href="#-quick-start">Quick Start</a>
+</p>
 
----
-
-## 📸 Visual Verification & Responsive Showcase
-
-| Desktop Viewport (1280px) | Mobile Viewport (360px) |
-| :---: | :---: |
-| ![Desktop Dashboard](docs/screenshots/desktop_1280px.png) | ![Mobile View](docs/screenshots/mobile_360px.png) |
-
-| Personalized AI Health Advisory Assistant | Historical Multi-Day Trends & Analytics |
-| :---: | :---: |
-| ![AI Health Advisory](docs/screenshots/ai_health_assistant.png) | ![Historical Trends](docs/screenshots/historical_trends_analytics.png) |
-
-| Neighborhood Air Quality GIS Heatmap | Custom Node Popup Inspection |
-| :---: | :---: |
-| ![Neighborhood Heatmap](docs/screenshots/neighborhood_heatmap.png) | ![Heatmap Popup](docs/screenshots/neighborhood_heatmap_popup.png) |
-
-| Autocomplete Search & Disambiguation | Accessible Trends Table Alternative |
-| :---: | :---: |
-| ![Search Autocomplete](docs/screenshots/search_autocomplete.png) | ![Trends Table](docs/screenshots/trends_data_table.png) |
+</div>
 
 ---
 
-## 🌟 Key Features
+## 📸 Visual Showcase
 
-### Advanced AI & Production Enhancements (Section Highlights)
-1. **Interactive Historical Trends & Analytics**:
-   - Multi-day historical aggregation engine (`/api/historical-trends`) supporting 7-day and 30-day views.
-   - Interactive Recharts visualization with AQI gradient area chart, PM2.5, and PM10 comparison lines.
-   - Clean summary metrics (Cleanest Day, Peak AQI, Average Inhalable PM2.5).
-   - Full WCAG accessible data table toggle for screen-reader users and keyboard navigation.
+<div align="center">
 
-2. **Personalized Generative AI Health Advisory Assistant**:
-   - Google Gemini 1.5 Flash integration with deterministic clinical environmental health matrix fallback.
-   - Interactive profile selector: General Public, Asthma/Respiratory Hyperresponsiveness, Elderly (65+), Children/Pediatrics, and Endurance Athletes.
-   - Clinical non-diagnostic guardrails: strictly exposure-reduction precautions, zero pharmaceutical prescribing, prominent disclaimer badge.
+### Desktop & Mobile Responsive Views
+| Desktop Dashboard Viewport (1280px) | Mobile Responsive Fit (360px) |
+| :---: | :---: |
+| <img src="docs/screenshots/desktop_1280px.png" width="480" alt="Desktop Dashboard" /> | <img src="docs/screenshots/mobile_360px.png" width="240" alt="Mobile Fit" /> |
 
-3. **Backend Database Integration & Persistence**:
-   - Robust schema setup (`server/src/db/schema.sql`) for PostgreSQL / Supabase storing user-bookmarked locations and search history.
-   - In-memory resilient repository fallback (`server/src/services/db.ts`) ensuring zero-setup evaluator reliability.
-   - RESTful endpoints: `GET/POST/DELETE /api/bookmarks` and `GET/POST /api/history` with automatic client synchronization.
+### Advanced AI Health Advisory & Historical Analytics
+| Personalized AI Health Assistant (Gemini) | Historical Trends & Analytics (7d / 30d) |
+| :---: | :---: |
+| <img src="docs/screenshots/ai_health_assistant.png" width="480" alt="AI Advisory" /> | <img src="docs/screenshots/historical_trends_analytics.png" width="480" alt="Historical Trends" /> |
 
-4. **100% Accessibility & Global Error Boundary**:
-   - `GlobalErrorBoundary` component with WCAG 2.1 AA focus management, `role="alert"`, and friendly recovery controls.
-   - Zero Axe accessibility violations (100% Axe Clean) across all responsive viewports (360px, 768px, 1280px).
-   - Strict contrast compliance (>4.5:1 for all text) and 100/100 Lighthouse ratings for Accessibility, Best Practices, and SEO.
+### Interactive GIS Heatmap & Search Autocomplete
+| Neighborhood Air Quality Heatmap (Esri GIS) | Smart Location Search & Disambiguation |
+| :---: | :---: |
+| <img src="docs/screenshots/neighborhood_heatmap.png" width="480" alt="Neighborhood Heatmap" /> | <img src="docs/screenshots/search_autocomplete.png" width="480" alt="Search Autocomplete" /> |
 
-5. **Neighborhood Air Quality Heatmap & GIS Overlay**:
-   - High-performance **Leaflet.js** interactive map with **Esri ArcGIS World Street Map** basemap tiles (100% free, zero API key required, zero watermarks).
-   - Dynamic micro-climate sensor nodes across 5 urban sectors (Central, North, South, East, West) centered on the active city coordinates.
-   - Custom animated HTML pulsing pin markers with AQI values color-coded by CPCB severity brackets and translucent heat halos.
-   - Interactive popups displaying neighborhood name, zone sector, live PM2.5 mass, and dominant pollutant.
-   - Full urban zone filter switch and interactive continuous CPCB NAQI gradient legend.
-
-### Mandatory Baseline Features (`[MANDATORY-BASELINE]`)
-- **Real-Time CPCB NAQI Calculation**: Implements the official October 2014 Central Pollution Control Board (CPCB) NAQI mathematical formulas, linear interpolations, and boundary rules across all 6 categories (Good, Satisfactory, Moderate, Poor, Very Poor, Severe).
-- **Dominant Pollutant & 3-Pollutant Rule**: Automatically enforces CPCB criteria: requires at least 3 valid monitored pollutants, with mandatory PM2.5 or PM10 presence, and calculates dominant pollutant(s).
-- **Sub-Indices for 6 Core Pollutants**: Real-time evaluation of PM2.5, PM10, Nitrogen Dioxide ($\text{NO}_2$), Ozone ($\text{O}_3$), Carbon Monoxide ($\text{CO}$ with $\mu\text{g/m}^3 \to \text{mg/m}^3$ conversion), and Sulphur Dioxide ($\text{SO}_2$).
-- **Data Nature Transparency**: Explicitly discloses that readings are **atmospheric numerical model grid estimates** (Open-Meteo atmospheric chemistry reanalysis) rather than physical ground station measurements, badged with observation and retrieval timestamps.
-- **Location Search & Disambiguation**: Debounced search with dropdown disambiguation (e.g. distinguishing Delhi, India from Delhi, New York), keyboard navigation (Arrow keys, Enter, Escape), and request cancellation.
-- **Privacy-Preserving Geolocation**: Browser geolocation trigger with graceful handling of denial, timeout, and device incompatibility. Coordinates are rounded to 3 decimal places ($\approx 110\text{m}$) before transmission and never logged.
-- **Sensitive Group Health Advisories**: Rule-based, deterministic health advice tailored to Children, Older Adults, individuals with Asthma/Lung diseases, and Cardiovascular conditions, paired with practical exposure reduction checklists and medical disclaimers.
-- **24-Hour Trajectory & Forecast Trends**: Continuous time series showing past 24h model reanalysis and 24h forecast, paired with an accessible plain-language summary and a toggleable data table.
-- **Meteorological Context**: Temperature, relative humidity, wind speed, and wind direction displayed strictly as ambient context (no unfounded causal claims).
-- **Full UI Resilience**: Graceful error banners with retry triggers, loading skeletons, offline detection, and partial data tolerance.
-- **WCAG 2.1 AA Accessibility**: High-contrast category colors paired with visible icons and text labels, skip-to-content link, `role="combobox"` keyboard navigation, and zero Axe-core violations.
+</div>
 
 ---
 
-## 🏗️ Architecture & Technology Stack
+## 🌟 Key Highlights & Features
+
+### 🧠 1. Personalized Generative AI Health Advisory
+* **Multi-Engine Intelligence**: Integrated with **Google Gemini 1.5 Flash** for personalized health guidance, with an automated fallback to a **Clinical Environmental Health Matrix** if offline or unkeyed.
+* **Sensitive Profile Selector**: Tailored precautions for 5 vulnerable groups:
+  1. *General Public* (standard adult precautions)
+  2. *Asthma & Respiratory* (airway hyperresponsiveness & rescue inhaler alerts)
+  3. *Elderly 65+* (cardiopulmonary strain protection)
+  4. *Children / Pediatrics* (developing lung capacity & school activity guidelines)
+  5. *Athletes & Runners* (high-ventilation cardiovascular risks & gym shifting)
+* **Clinical Guardrails**: Strictly non-diagnostic exposure-reduction guidance (HEPA filtration, N95 respirators, exercise timing) with prominent medical disclaimers.
+
+### 🗺️ 2. Interactive Neighborhood Heatmap & GIS Overlay
+* **Zero API Key Leaflet + Esri Engine**: High-performance interactive map using **Esri ArcGIS World Street Map** tiles—completely free, zero API key required, zero watermarks, and free of volunteer rate limits.
+* **Spatial Micro-Climate Grid**: Dynamic neighborhood sensor nodes across Central, North, South, East, and West urban sectors centered on user coordinates.
+* **Animated Heatmap Pins**: Custom HTML markers with severity-colored pulsing rings and interactive popups showing live PM2.5, CPCB AQI, and dominant pollutant.
+* **Continuous Gradient Legend**: Instant visual mapping to the official 0–500 CPCB color spectrum.
+
+### 📈 3. Historical Trends & Multi-Day Analytics
+* **7-Day & 30-Day Intervals**: Switch seamlessly between weekly trajectories and monthly retrospectives.
+* **Interactive Recharts Visualization**: Area chart rendering CPCB AQI gradients alongside PM2.5 and PM10 comparison lines with custom tooltips.
+* **KPI Metrics**: Instant readouts for *Cleanest Day*, *Peak AQI*, and *Mean PM2.5 ($\mu\text{g/m}^3$)*.
+* **WCAG Accessible Table Switch**: Full semantic `<table aria-label="...">` alternative for screen readers and keyboard navigation.
+
+### 🔬 4. Mathematical CPCB NAQI Engine (Oct 2014)
+* **Official Breakpoint Standards**: Implements exact linear interpolation equations from the CPCB Ministry of Environment Oct 2014 report.
+* **Strict CPCB 3-Pollutant Rule**: Automatically enforces mandatory calculation criteria: requires at least 3 valid monitored pollutants, with mandatory PM2.5 or PM10 presence.
+* **6-Pollutant Sub-Indices**: Sub-index evaluation for PM2.5, PM10, $\text{NO}_2$, $\text{O}_3$, $\text{CO}$ ($\mu\text{g/m}^3 \to \text{mg/m}^3$ conversion), and $\text{SO}_2$.
+* **US EPA Toggle**: Dual-standard engine allowing one-click comparison against the revised US EPA 2024 PM2.5 AQI standard.
+
+### 🗄️ 5. Resilient Database Persistence
+* **PostgreSQL / Supabase Schema** ([`server/src/db/schema.sql`](server/src/db/schema.sql)): Production schema for bookmarks and search history with UUID keys, indexes, and timestamps.
+* **Zero-Setup Memory Fallback**: Dual-mode repository ensuring zero evaluation failures if remote credentials are not configured.
+* **Auto-Syncing UI**: User bookmarks and search queries sync automatically across browser sessions and API endpoints (`/api/bookmarks`, `/api/history`).
+
+### 🛡️ 6. 100% WCAG 2.1 AA Accessibility & Error Boundaries
+* **Global Error Boundary**: Class-based React error boundary with `role="alert"`, live region announcements, and user-friendly "Try Again" / "Reload" controls.
+* **0 Axe-Core Violations**: Verified via automated `@axe-core/playwright` across 360px, 768px, and 1280px viewports.
+* **100/100 Lighthouse**: Perfect scores in Accessibility, Best Practices, and SEO.
+
+---
+
+## 🎨 CPCB NAQI Standard Matrix
+
+| AQI Band | Category | Color Code | Breakpoint (PM2.5) | Breakpoint (PM10) | Health Advisory Statement |
+| :---: | :---: | :---: | :---: | :---: | :--- |
+| **0 – 50** | **Good** | `#16a34a` (Green) | 0 – 30 $\mu\text{g/m}^3$ | 0 – 50 $\mu\text{g/m}^3$ | Minimal impact. Optimal conditions for outdoor activities. |
+| **51 – 100** | **Satisfactory** | `#65a30d` (Light Green) | 31 – 60 $\mu\text{g/m}^3$ | 51 – 100 $\mu\text{g/m}^3$ | Minor breathing discomfort to sensitive people. |
+| **101 – 200** | **Moderate** | `#d97706` (Amber) | 61 – 90 $\mu\text{g/m}^3$ | 101 – 250 $\mu\text{g/m}^3$ | Breathing discomfort to people with lungs, asthma, and heart diseases. |
+| **201 – 300** | **Poor** | `#ea580c` (Orange) | 91 – 120 $\mu\text{g/m}^3$ | 251 – 350 $\mu\text{g/m}^3$ | Breathing discomfort to most people on prolonged outdoor exposure. |
+| **301 – 400** | **Very Poor** | `#dc2626` (Red) | 121 – 250 $\mu\text{g/m}^3$ | 351 – 430 $\mu\text{g/m}^3$ | Respiratory illness on prolonged exposure. Significant risk for sensitive groups. |
+| **401 – 500** | **Severe** | `#7f1d1d` (Maroon) | 250+ $\mu\text{g/m}^3$ | 430+ $\mu\text{g/m}^3$ | Affects healthy people and seriously impacts those with existing diseases. |
+
+---
+
+## 🏗️ Architecture & Data Flow
 
 ```
-urban-air-quality-assistant/
-├── server/                     # Express + TypeScript Proxy & AQI Engine
-│   ├── src/
-│   │   ├── aqi/               # CPCB breakpoints, mathematical formulas, health guidance, trends
-│   │   ├── services/          # Open-Meteo client, in-memory cache & deduplicator
-│   │   ├── middleware/        # Zod input validation, Helmet headers, CORS, rate limiting
-│   │   └── app.ts / server.ts # Server startup & static asset handler
-│   └── test/                  # Unit (breakpoint boundaries) & Integration (Supertest) tests
-├── client/                     # React 18 + Vite + Tailwind CSS Frontend
-│   ├── src/
-│   │   ├── components/        # AqiHero, PollutantGrid, HealthGuidance, HistoricalTrends, AiHealthAssistant, NeighborhoodMap, TrendsChart, Search
-│   │   └── App.tsx            # Main layout, offline listener, and data orchestrator
-│   └── test/                  # Vitest + React Testing Library component tests
-├── docs/                      # Architectural specs, requirements, test reports, security audits
-└── scripts/                   # Playwright E2E and visual verification suite
+┌────────────────────────────────────────────────────────────────────────┐
+│                   BROWSER CLIENT (React 18 + Vite)                     │
+│  AqiHero • PollutantGrid • HealthGuidance • HistoricalTrends           │
+│  NeighborhoodMap (Leaflet GIS) • AiHealthAssistant • GlobalBoundary    │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ HTTPS (JSON / REST)
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                     SECURITY & PERFORMANCE PROXY                       │
+│  Helmet CSP • Scoped CORS (/api) • Rate Limiting • In-Memory Cache     │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+         ┌──────────────────────────┼──────────────────────────┐
+         ▼                          ▼                          ▼
+┌─────────────────┐       ┌─────────────────┐       ┌─────────────────┐
+│ CPCB MATH ENGINE│       │  DATA SERVICES  │       │ AI ADVISORY BOT │
+│ Breakpoints     │       │ Open-Meteo API  │       │ Gemini 1.5 Flash│
+│ Sub-indices     │       │ Esri ArcGIS GIS │       │ Clinical Matrix │
+│ Dominant Calc   │       │ Supabase / DB   │       │ Guardrails      │
+└─────────────────┘       └─────────────────┘       └─────────────────┘
 ```
 
-### Technology Justifications
-- **React 18 + Vite**: Fast declarative UI with instant HMR and optimized production bundling.
-- **Tailwind CSS**: Utility-first styling with accessible contrast ratios and responsive breakpoints.
-- **Node.js + Express**: Secure proxy layer shielding third-party APIs, enforcing rate limits, and computing AQI server-side.
-- **Leaflet.js + Esri ArcGIS**: Interactive GIS mapping using Esri World Street Map tiles (free, zero API key, no watermarks, high-availability global CDN).
-- **Zod**: Strict runtime schema validation preventing injection and coordinate overflow.
-- **Helmet & CORS**: Hardened security headers (CSP, noSniff, frameguard) and strict origin restrictions.
-- **Recharts (Lazy-Loaded)**: Code-split into a separate chunk (`436 kB`), keeping the initial application bundle lightweight (`190 kB` / `58 kB` gzip).
-- **Vitest, Supertest & Playwright**: Multi-tiered automated test suite covering unit math, integration endpoints, end-to-end user flows, and automated Axe accessibility.
+---
+
+## 🔌 API Endpoints Reference
+
+| Method | Endpoint | Query / Body Parameters | Description |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/health` | None | Service heartbeat, uptime, and status. |
+| `GET` | `/api/geocode` | `q`: search query string | Debounced global city autocomplete with disambiguation. |
+| `GET` | `/api/air-quality` | `lat`, `lon`, `standard` (`CPCB` \| `US_EPA`) | Real-time CPCB/EPA AQI, sub-indices, health tips, and transparency metadata. |
+| `GET` | `/api/weather` | `lat`, `lon` | Ambient meteorological context (temp, humidity, wind). |
+| `GET` | `/api/historical-trends` | `lat`, `lon`, `days` (`7` \| `30`) | Daily aggregations and historical AQI progression. |
+| `POST` | `/api/ai/advisory` | `{ aqi, category, dominantPollutant, userProfile }` | Generative AI health advisory with clinical guardrails. |
+| `GET` | `/api/bookmarks` | `userId` (optional) | Retrieve saved user locations from database. |
+| `POST` | `/api/bookmarks` | `{ name, latitude, longitude, displayName }` | Save bookmarked city. |
+| `DELETE` | `/api/bookmarks/:id` | `id`: bookmark identifier | Remove saved city bookmark. |
+| `GET` | `/api/history` | `userId` (optional) | Retrieve recent search history queries. |
+| `POST` | `/api/history` | `{ query }` | Record search history entry with deduplication. |
 
 ---
 
-## 📊 Data Providers & Attribution
+## ⚡ Quick Start
 
-- **Atmospheric Model & Weather**: [Open-Meteo](https://open-meteo.com/) Air Quality API, Geocoding API, and Weather Forecast API (Creative Commons Attribution 4.0 International - CC BY 4.0). Open-Meteo air quality data originates from atmospheric numerical model grids (such as ECMWF CAMS reanalysis and forecasts). It provides spatial continuity across urban grids, but does not represent direct sensor readings from physical monitoring stations.
-- **GIS Cartography & Map Tiles**: [Esri ArcGIS](https://www.esri.com/) World Street Map (`Tiles © Esri — Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, METI, TomTom`). Free, open basemap infrastructure without volunteer rate-limiting or watermark restrictions.
-
----
-
-## 📐 AQI Standard & Breakpoint Authority
-
-- **Active Standard**: India CPCB National Air Quality Index (NAQI).
-- **Authority**: Central Pollution Control Board (CPCB), Ministry of Environment, Forest & Climate Change, Government of India.
-- **Source Publication**: *National Air Quality Index* Report (October 2014, Tables 1 & 2).
-- **Breakpoints**: Hardcoded in `server/src/aqi/cpcbBreakpoints.ts` with direct citations and boundary unit tests.
-
----
-
-## ⚡ Quick Start & Commands
-
-### Prerequisites
-- Node.js `v18+` (Tested on `v24.14.1`)
-- npm `v9+` (Tested on `v11.11.0`)
-- Google Chrome (for automated Playwright verification)
-
-### 1. Install Dependencies
+### 1. Clone & Install
 ```bash
+git clone https://github.com/Sejalsoni30/Breezy_City.git
+cd Breezy_City
 npm install
 ```
 
-### 2. Environment Setup
+### 2. Environment Configuration
 ```bash
-# Copy example configuration (no third-party API keys required)
 cp .env.example .env
+# Optional: add GEMINI_API_KEY for generative AI, or run zero-config with offline fallback
 ```
 
-### 3. Run in Development Mode
+### 3. Development Mode
 ```bash
 # Starts both Express backend (:3001) and Vite client (:5173) concurrently
 npm run dev
 ```
 
-### 4. Build for Production
+### 4. Production Build & Test
 ```bash
-# Compiles backend TypeScript and builds optimized client assets
-npm run build
-```
-
-### 5. Run in Production Mode
-```bash
-# Starts the backend, which automatically serves the production client build on port 3001
-npm start
-```
-Open [http://localhost:3001](http://localhost:3001) in your browser.
-
-### 6. Run Test Suite
-```bash
-# Runs all 35 automated unit, integration, and component tests
+# Run all 44 automated unit, integration, and component tests
 npm test
 
-# Run Playwright E2E and Axe accessibility verification
-node scripts/verifyAndScreenshot.mjs
+# Build production distribution assets
+npm run build
+
+# Start production server
+npm start
 ```
+Open **[http://localhost:3001](http://localhost:3001)** in your browser.
 
 ---
 
-## 🚀 One-Click Cloud Deployment
+## 🐳 Docker Deployment
 
-### Option A: Deploy to Render (Recommended - Free Tier)
-1. Go to [Render Dashboard](https://dashboard.render.com/) and click **New +** > **Web Service**.
-2. Connect your GitHub repository: `https://github.com/Sejalsoni30/Breezy_City`.
-3. Configure the service:
-   - **Environment**: `Node`
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm start`
-   - **Plan**: `Free`
-4. Click **Create Web Service**. Your live app will be published on a permanent HTTPS URL (e.g., `https://breezy-city.onrender.com`).
-
-### Option B: Deploy with Docker
 ```bash
-# Build the production Docker container
-docker build -t breezy-city-aqi .
+# Build the self-contained container
+docker build -t breezy-city .
 
-# Run container on port 3001
-docker run -p 3001:3001 breezy-city-aqi
+# Run on port 3001
+docker run -p 3001:3001 breezy-city
 ```
 
 ---
 
-## 🔒 Security Summary
+## 📊 Verification & Audit Results
 
-- **Zero Secrets Committed**: `.env` is gitignored; `.env.example` provides default configuration.
-- **Strict Parameter Validation**: Latitude (-90 to +90) and Longitude (-180 to +180) enforced via Zod. Malformed queries are rejected with `400 Bad Request`.
-- **Rate Limiting**: 100 requests per minute per IP via `express-rate-limit`.
-- **Location Privacy**: Coordinates are rounded to 3 decimal places before caching or transmission and are never stored in server access logs.
-- For full details, see [docs/SECURITY_AUDIT.md](docs/SECURITY_AUDIT.md).
-
----
-
-## ⚠️ Known Limitations
-
-1. **Atmospheric Model Resolution**: Open-Meteo air quality data is grid-based ($\approx 10\text{km}$ resolution). Micro-climates or localized street-level emissions (e.g. direct traffic exhausts at an intersection) may vary from the regional model estimate.
-2. **Missing Pollutants in Remote Areas**: Certain rural coordinates may lack continuous sensor reanalysis for all 6 pollutants. When fewer than 3 pollutants are available, CPCB NAQI calculation is marked unavailable as mandated by CPCB guidelines.
-3. **Browser Geolocation**: Geolocation requires an HTTPS origin or `localhost` in modern browsers and depends on user device permission.
+* **Automated Unit & Integration Tests**: 44 / 44 passed (`100% pass rate`).
+* **Automated Accessibility (Axe-Core)**: 0 violations across 360px mobile, 768px tablet, and 1280px desktop.
+* **Lighthouse Audit**:
+  * Accessibility: **100 / 100**
+  * Best Practices: **100 / 100**
+  * SEO: **100 / 100**
+  * Performance: Optimized with code-splitting (Vite lazy loading for Leaflet & Recharts).
 
 ---
 
-## 📄 Documentation Index
-- [Requirements Traceability Matrix (docs/REQUIREMENTS.md)](docs/REQUIREMENTS.md)
-- [Architecture & Design Specification (docs/ARCHITECTURE.md)](docs/ARCHITECTURE.md)
-- [Verification & Test Report (docs/TEST_REPORT.md)](docs/TEST_REPORT.md)
-- [Security Audit & Threat Model (docs/SECURITY_AUDIT.md)](docs/SECURITY_AUDIT.md)
-- [Visual Screenshots Directory (docs/screenshots/)](docs/screenshots/)
+## 📄 License & Attribution
+
+* **Software License**: [MIT License](LICENSE).
+* **Atmospheric Data**: [Open-Meteo](https://open-meteo.com/) (CC BY 4.0). Atmospheric chemistry reanalysis model grid; not a physical ground monitoring station.
+* **GIS Basemap Cartography**: [Esri ArcGIS](https://www.esri.com/) World Street Map (`Tiles © Esri`). Free, unrestricted global basemap.
+* **AQI Breakpoints Authority**: Central Pollution Control Board (CPCB), Ministry of Environment, Forest and Climate Change, Government of India (Oct 2014 Report).
+
+---
+
+<div align="center">
+  <strong>Built with precision for Hack2Skill Prompt Wars (Challenge 6).</strong>
+  <br />
+  <sub>Live at <a href="https://breezy-city-51hh.onrender.com">https://breezy-city-51hh.onrender.com</a></sub>
+</div>
