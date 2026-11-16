@@ -41,6 +41,22 @@ async function captureAdvancedFeatures() {
   await trendsSection.screenshot({ path: path.join(screenshotsDir, 'historical_trends_30days.png') });
   console.log('✓ Saved historical_trends_30days.png');
 
+  // 5. Capture Neighborhood Air Quality Heatmap component
+  const mapSection = page.locator('section[aria-labelledby="map-section-title"]');
+  await mapSection.waitFor({ timeout: 6000 });
+  await page.waitForTimeout(1000); // allow Leaflet tiles to load
+  await mapSection.screenshot({ path: path.join(screenshotsDir, 'neighborhood_heatmap.png') });
+  console.log('✓ Saved neighborhood_heatmap.png');
+
+  // 6. Click a marker to trigger popup on map
+  const markerPin = mapSection.locator('.custom-aqi-pin').first();
+  if (await markerPin.count() > 0) {
+    await markerPin.click();
+    await page.waitForTimeout(500);
+    await mapSection.screenshot({ path: path.join(screenshotsDir, 'neighborhood_heatmap_popup.png') });
+    console.log('✓ Saved neighborhood_heatmap_popup.png');
+  }
+
   await browser.close();
   console.log('=== All advanced feature screenshots captured successfully ===');
 }

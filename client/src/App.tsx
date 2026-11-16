@@ -14,6 +14,7 @@ import { Star } from 'lucide-react';
 const TrendsChart = lazy(() => import('./components/TrendsChart'));
 const HistoricalTrends = lazy(() => import('./components/HistoricalTrends'));
 const AiHealthAssistant = lazy(() => import('./components/AiHealthAssistant'));
+const NeighborhoodMap = lazy(() => import('./components/NeighborhoodMap'));
 
 const STORAGE_KEY_FAVORITES = 'urban_aqi_favorites_v1';
 
@@ -324,6 +325,22 @@ export const App: React.FC = () => {
               <HistoricalTrends
                 latitude={selectedLocation.latitude}
                 longitude={selectedLocation.longitude}
+              />
+            </Suspense>
+
+            {/* Neighborhood Air Quality Heatmap & GIS Overlay */}
+            <Suspense
+              fallback={
+                <div className="bg-white rounded-2xl p-6 border border-slate-200 h-96 animate-pulse flex items-center justify-center text-slate-400 text-xs">
+                  Loading neighborhood GIS heatmap...
+                </div>
+              }
+            >
+              <NeighborhoodMap
+                latitude={selectedLocation.latitude}
+                longitude={selectedLocation.longitude}
+                cityName={selectedLocation.name}
+                baseAqi={airQuality.aqi}
               />
             </Suspense>
 
