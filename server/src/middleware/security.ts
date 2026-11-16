@@ -25,12 +25,24 @@ export const securityHeaders = helmet({
 
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
-    // Allow non-browser requests (e.g. server-to-server or test runners with undefined origin)
-    if (!origin || origin === CLIENT_ORIGIN || origin === 'http://localhost:3001' || origin === 'http://127.0.0.1:5173') {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS request blocked by origin allowlist'));
+    // Allow non-browser requests or same-origin requests without an Origin header
+    if (!origin) {
+      return callback(null, true);
     }
+
+    // Allow configured origin, localhost, or any onrender.com deployment
+    if (
+      CLIENT_ORIGIN === '*' ||
+      origin === CLIENT_ORIGIN ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1') ||
+      origin.endsWith('.onrender.com') ||
+      origin.includes('onrender.com')
+    ) {
+      return callback(null, true);
+    }
+
+    callback(new Error('CORS request blocked by origin allowlist'));
   },
   methods: ['GET', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Accept'],

@@ -7,12 +7,12 @@ import { apiRouter } from './routes/api.js';
 export function createApp(): Express {
   const app = express();
 
-  // Basic security and parsing
+  // Basic security headers
   app.use(securityHeaders);
-  app.use(corsMiddleware);
   app.use(express.json({ limit: '10kb' }));
 
-  // Apply rate limiter to /api
+  // Apply CORS and rate limiting specifically to /api routes
+  app.use('/api', corsMiddleware);
   app.use('/api', apiRateLimiter);
 
   // robots.txt route for SEO compliance
