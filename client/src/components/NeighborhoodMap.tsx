@@ -106,11 +106,12 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
       scrollWheelZoom: false
     });
 
-    // Clean CartoDB Positron / OpenStreetMap light basemap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
+    // Production-ready CartoDB Positron basemap tiles (no volunteer rate limits, compliant with OSM policy)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+      subdomains: 'abcd',
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+        '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>'
     }).addTo(map);
 
     const markersLayer = L.layerGroup().addTo(map);
