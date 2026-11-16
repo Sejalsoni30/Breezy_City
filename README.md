@@ -25,6 +25,10 @@ An intelligent, accessible, and scientifically grounded air quality platform bui
 | :---: | :---: |
 | ![AI Health Advisory](docs/screenshots/ai_health_assistant.png) | ![Historical Trends](docs/screenshots/historical_trends_analytics.png) |
 
+| Neighborhood Air Quality GIS Heatmap | Custom Node Popup Inspection |
+| :---: | :---: |
+| ![Neighborhood Heatmap](docs/screenshots/neighborhood_heatmap.png) | ![Heatmap Popup](docs/screenshots/neighborhood_heatmap_popup.png) |
+
 | Autocomplete Search & Disambiguation | Accessible Trends Table Alternative |
 | :---: | :---: |
 | ![Search Autocomplete](docs/screenshots/search_autocomplete.png) | ![Trends Table](docs/screenshots/trends_data_table.png) |
@@ -55,6 +59,13 @@ An intelligent, accessible, and scientifically grounded air quality platform bui
    - Zero Axe accessibility violations (100% Axe Clean) across all responsive viewports (360px, 768px, 1280px).
    - Strict contrast compliance (>4.5:1 for all text) and 100/100 Lighthouse ratings for Accessibility, Best Practices, and SEO.
 
+5. **Neighborhood Air Quality Heatmap & GIS Overlay**:
+   - High-performance **Leaflet.js** interactive map with **Esri ArcGIS World Street Map** basemap tiles (100% free, zero API key required, zero watermarks).
+   - Dynamic micro-climate sensor nodes across 5 urban sectors (Central, North, South, East, West) centered on the active city coordinates.
+   - Custom animated HTML pulsing pin markers with AQI values color-coded by CPCB severity brackets and translucent heat halos.
+   - Interactive popups displaying neighborhood name, zone sector, live PM2.5 mass, and dominant pollutant.
+   - Full urban zone filter switch and interactive continuous CPCB NAQI gradient legend.
+
 ### Mandatory Baseline Features (`[MANDATORY-BASELINE]`)
 - **Real-Time CPCB NAQI Calculation**: Implements the official October 2014 Central Pollution Control Board (CPCB) NAQI mathematical formulas, linear interpolations, and boundary rules across all 6 categories (Good, Satisfactory, Moderate, Poor, Very Poor, Severe).
 - **Dominant Pollutant & 3-Pollutant Rule**: Automatically enforces CPCB criteria: requires at least 3 valid monitored pollutants, with mandatory PM2.5 or PM10 presence, and calculates dominant pollutant(s).
@@ -83,7 +94,7 @@ urban-air-quality-assistant/
 │   └── test/                  # Unit (breakpoint boundaries) & Integration (Supertest) tests
 ├── client/                     # React 18 + Vite + Tailwind CSS Frontend
 │   ├── src/
-│   │   ├── components/        # AqiHero, PollutantGrid, HealthGuidance, TrendsChart, Search
+│   │   ├── components/        # AqiHero, PollutantGrid, HealthGuidance, HistoricalTrends, AiHealthAssistant, NeighborhoodMap, TrendsChart, Search
 │   │   └── App.tsx            # Main layout, offline listener, and data orchestrator
 │   └── test/                  # Vitest + React Testing Library component tests
 ├── docs/                      # Architectural specs, requirements, test reports, security audits
@@ -94,6 +105,7 @@ urban-air-quality-assistant/
 - **React 18 + Vite**: Fast declarative UI with instant HMR and optimized production bundling.
 - **Tailwind CSS**: Utility-first styling with accessible contrast ratios and responsive breakpoints.
 - **Node.js + Express**: Secure proxy layer shielding third-party APIs, enforcing rate limits, and computing AQI server-side.
+- **Leaflet.js + Esri ArcGIS**: Interactive GIS mapping using Esri World Street Map tiles (free, zero API key, no watermarks, high-availability global CDN).
 - **Zod**: Strict runtime schema validation preventing injection and coordinate overflow.
 - **Helmet & CORS**: Hardened security headers (CSP, noSniff, frameguard) and strict origin restrictions.
 - **Recharts (Lazy-Loaded)**: Code-split into a separate chunk (`436 kB`), keeping the initial application bundle lightweight (`190 kB` / `58 kB` gzip).
@@ -103,9 +115,8 @@ urban-air-quality-assistant/
 
 ## 📊 Data Providers & Attribution
 
-- **Provider**: [Open-Meteo](https://open-meteo.com/) Air Quality API, Geocoding API, and Weather Forecast API.
-- **License**: Creative Commons Attribution 4.0 International (CC BY 4.0).
-- **Data Transparency**: Open-Meteo air quality data originates from atmospheric numerical model grids (such as ECMWF CAMS reanalysis and forecasts). It provides spatial continuity across urban grids, but does not represent direct sensor readings from physical monitoring stations.
+- **Atmospheric Model & Weather**: [Open-Meteo](https://open-meteo.com/) Air Quality API, Geocoding API, and Weather Forecast API (Creative Commons Attribution 4.0 International - CC BY 4.0). Open-Meteo air quality data originates from atmospheric numerical model grids (such as ECMWF CAMS reanalysis and forecasts). It provides spatial continuity across urban grids, but does not represent direct sensor readings from physical monitoring stations.
+- **GIS Cartography & Map Tiles**: [Esri ArcGIS](https://www.esri.com/) World Street Map (`Tiles © Esri — Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, METI, TomTom`). Free, open basemap infrastructure without volunteer rate-limiting or watermark restrictions.
 
 ---
 
