@@ -9,7 +9,7 @@ interface CacheEntry<T> {
 
 export class AppCache {
   private cache: NodeCache;
-  private pendingRequests: Map<string, Promise<any>>;
+  private pendingRequests: Map<string, Promise<unknown>>;
 
   constructor(ttlSeconds: number = DEFAULT_TTL_SECONDS) {
     this.cache = new NodeCache({
@@ -71,7 +71,7 @@ export class AppCache {
 
     // 2. Check if identical request is currently in-flight
     if (this.pendingRequests.has(key)) {
-      const data = await this.pendingRequests.get(key)!;
+      const data = (await this.pendingRequests.get(key)!) as T;
       return {
         data,
         isCached: true,

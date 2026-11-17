@@ -1,16 +1,16 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import { validateQuery, geocodeQuerySchema, coordsQuerySchema } from '../middleware/validate.js';
-import { searchLocations, fetchRawAirQuality, fetchRawWeather } from '../services/openMeteo.js';
+import { searchLocations, fetchRawAirQuality, fetchRawWeather, OpenMeteoAirQualityRawResponse } from '../services/openMeteo.js';
 import { calculateCpcbAqi, calculateSubIndex, getCategoryFromAqi } from '../aqi/calculator.js';
 import { calculateEpaSubIndex, getEpaCategory } from '../aqi/epaCalculator.js';
-import { EPA_CATEGORIES } from '../aqi/epaBreakpoints.js';
+import { EPA_CATEGORIES, EpaAqiCategory } from '../aqi/epaBreakpoints.js';
 import { getHealthGuidance } from '../aqi/healthGuidance.js';
 import { processTrends } from '../aqi/trends.js';
 import { appCache, AppCache } from '../services/cache.js';
 import { generateAiHealthAdvisory } from '../services/aiAdvisory.js';
 import { db } from '../services/db.js';
-import { AirQualityApiResponse, WeatherData } from '../types/index.js';
+import { AirQualityApiResponse, WeatherData, AqiCategoryInfo } from '../types/index.js';
 
 export const apiRouter = Router();
 
@@ -69,7 +69,7 @@ apiRouter.get(
 
           let finalAqi: number | null = null;
           let finalCategory: string | null = null;
-          let finalCategoryInfo: any = null;
+          let finalCategoryInfo: AqiCategoryInfo | null = null;
           let finalDominant: string[] = [];
           let finalStandardName = 'India CPCB National Air Quality Index (NAQI)';
           let finalStandardRef = 'Central Pollution Control Board, MoEFCC, Oct 2014 Table 1';
@@ -78,13 +78,12 @@ apiRouter.get(
             finalStandardName = 'US EPA Air Quality Index (2024 Revised Standard)';
             finalStandardRef = 'US EPA Technical Assistance Document (EPA-454/B-24-001, May 2024)';
 
-            const epaPm25 = current.pm2_5 !== undefined ? calculateEpaSubIndex('pm2_5', current.pm2_5) : null;
-            const epaPm10 = current.pm10 !== undefined ? calculateEpaSubIndex('pm10', current.pm10) : null;
+            const epaPm25 = typeof current.pm2_5 === 'number' ? calculateEpaSubIndex('pm2_5', current.pm2_5) : null;
+            const epaPm10 = typeof current.pm10 === 'number' ? calculateEpaSubIndex('pm10', current.pm10) : null;
 
-            const validIndices = [
-              { key: 'pm2_5', res: epaPm25 },
-              { key: 'pm10', res: epaPm10 }
-            ].filter((item): item is { key: string; res: { subIndex: number; category: any } } => item.res !== null);
+            const validIndices: Array<{ key: string; res: { subIndex: number; category: EpaAqiCategory } }> = [];
+            if (epaPm25 !== null) validIndices.push({ key: 'pm2_5', res: epaPm25 });
+            if (epaPm10 !== null) validIndices.push({ key: 'pm10', res: epaPm10 });
 
             if (validIndices.length > 0) {
               const maxItem = validIndices.reduce((prev, curr) =>
@@ -92,18 +91,18 @@ apiRouter.get(
               );
               finalAqi = maxItem.res.subIndex;
               finalCategory = maxItem.res.category;
-              finalCategoryInfo = EPA_CATEGORIES[maxItem.res.category as keyof typeof EPA_CATEGORIES];
+              finalCategoryInfo = EPA_CATEGORIES[maxItem.res.category];
               finalDominant = [maxItem.key];
             }
           } else {
             // Default India CPCB NAQI
             const cpcbRes = calculateCpcbAqi({
-              pm2_5: current.pm2_5,
-              pm10: current.pm10,
-              nitrogen_dioxide: current.nitrogen_dioxide,
-              ozone: current.ozone,
-              carbon_monoxide: current.carbon_monoxide,
-              sulphur_dioxide: current.sulphur_dioxide
+              pm2_5: current.pm2_5 ?? null,
+              pm10: current.pm10 ?? null,
+              nitrogen_dioxide: current.nitrogen_dioxide ?? null,
+              ozone: current.ozone ?? null,
+              carbon_monoxide: current.carbon_monoxide ?? null,
+              sulphur_dioxide: current.sulphur_dioxide ?? null
             });
             finalAqi = cpcbRes.aqi;
             finalCategory = cpcbRes.category;
@@ -113,12 +112,12 @@ apiRouter.get(
 
           // Compute underlying pollutant breakdown & health guidance
           const baseCpcb = calculateCpcbAqi({
-            pm2_5: current.pm2_5,
-            pm10: current.pm10,
-            nitrogen_dioxide: current.nitrogen_dioxide,
-            ozone: current.ozone,
-            carbon_monoxide: current.carbon_monoxide,
-            sulphur_dioxide: current.sulphur_dioxide
+            pm2_5: current.pm2_5 ?? null,
+            pm10: current.pm10 ?? null,
+            nitrogen_dioxide: current.nitrogen_dioxide ?? null,
+            ozone: current.ozone ?? null,
+            carbon_monoxide: current.carbon_monoxide ?? null,
+            sulphur_dioxide: current.sulphur_dioxide ?? null
           });
 
           // Health guidance based on category
@@ -228,7 +227,7 @@ apiRouter.get(
           const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&hourly=pm10,pm2_5,nitrogen_dioxide,ozone&past_days=${days}&forecast_days=0`;
           const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
           if (!response.ok) throw new Error('Failed to fetch historical model data');
-          const raw: any = await response.json();
+          const raw = (await response.json()) as OpenMeteoAirQualityRawResponse;
 
           const hourly = raw.hourly || {};
           const dailyMap = new Map<string, { pm2_5: number[]; pm10: number[] }>();

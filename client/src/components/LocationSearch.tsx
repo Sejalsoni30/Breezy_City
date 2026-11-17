@@ -72,8 +72,8 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
         setIsOpen(true);
         setNoResults(locations.length === 0);
         setHighlightedIndex(-1);
-      } catch (err: any) {
-        if (err.name !== 'AbortError') {
+      } catch (err: unknown) {
+        if (!(err instanceof Error && err.name === 'AbortError')) {
           console.error('[Search] Geocode error:', err);
           setResults([]);
           setNoResults(true);

@@ -3,7 +3,7 @@ import { TrendPoint, TrendsSummary } from '../types/index.js';
 
 export function processTrends(
   hourly: {
-    time: string[];
+    time?: string[];
     pm10?: (number | null)[];
     pm2_5?: (number | null)[];
     nitrogen_dioxide?: (number | null)[];

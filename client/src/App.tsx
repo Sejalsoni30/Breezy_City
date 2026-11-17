@@ -86,11 +86,11 @@ export const App: React.FC = () => {
           setFavorites((prev) => {
             const map = new Map<string, LocationItem>();
             prev.forEach((p) => map.set(`${p.latitude.toFixed(2)},${p.longitude.toFixed(2)}`, p));
-            data.bookmarks.forEach((b: any) => {
+            data.bookmarks.forEach((b: { id?: string | number; name: string; latitude: number; longitude: number; displayName?: string }) => {
               const key = `${Number(b.latitude).toFixed(2)},${Number(b.longitude).toFixed(2)}`;
               if (!map.has(key)) {
                 map.set(key, {
-                  id: b.id || Math.random(),
+                  id: typeof b.id === 'number' ? b.id : (b.id ? Number(b.id) : Date.now()),
                   name: b.name,
                   latitude: b.latitude,
                   longitude: b.longitude,
@@ -202,12 +202,10 @@ export const App: React.FC = () => {
           console.warn('[App] Weather fetch failed, continuing with AQI data:', wxErr);
           setWeather(null);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('[App] Failed to load data:', err);
-        setError(
-          err.message ||
-            'An error occurred while fetching atmospheric data. Please check your connection.'
-        );
+        const errMessage = err instanceof Error ? err.message : 'An error occurred while fetching atmospheric data. Please check your connection.';
+        setError(errMessage);
       } finally {
         setIsLoading(false);
       }

@@ -9,7 +9,36 @@ import { LocationSearch } from '../src/components/LocationSearch';
 import { GlobalErrorBoundary } from '../src/components/GlobalErrorBoundary';
 import { AiHealthAssistant } from '../src/components/AiHealthAssistant';
 import { HistoricalTrends } from '../src/components/HistoricalTrends';
+import { NeighborhoodMap } from '../src/components/NeighborhoodMap';
 import { AirQualityApiResponse } from '../src/types';
+
+vi.mock('leaflet', () => {
+  const mapMock = {
+    remove: vi.fn(),
+    invalidateSize: vi.fn(),
+    setView: vi.fn(),
+    flyTo: vi.fn()
+  };
+  const layerGroupMock = {
+    addTo: vi.fn().mockReturnThis(),
+    clearLayers: vi.fn()
+  };
+  const markerMock = {
+    addTo: vi.fn().mockReturnThis(),
+    bindPopup: vi.fn().mockReturnThis(),
+    on: vi.fn().mockReturnThis()
+  };
+  return {
+    default: {
+      map: vi.fn(() => mapMock),
+      tileLayer: vi.fn(() => ({ addTo: vi.fn() })),
+      layerGroup: vi.fn(() => layerGroupMock),
+      circleMarker: vi.fn(() => markerMock),
+      marker: vi.fn(() => markerMock),
+      divIcon: vi.fn(() => ({}))
+    }
+  };
+});
 
 const mockAqiData: AirQualityApiResponse = {
   standard: 'CPCB',
@@ -277,6 +306,52 @@ describe('Client UI Component Tests', () => {
       expect(screen.getByRole('button', { name: /Past 7 Days/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Past 30 Days/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Table View/i })).toBeInTheDocument();
+    });
+  });
+
+  describe('NeighborhoodMap Component', () => {
+    it('renders card header, zone filter buttons, and AQI color legend', () => {
+      render(
+        <NeighborhoodMap
+          latitude={28.6139}
+          longitude={77.2090}
+          cityName="Delhi"
+          baseAqi={175}
+        />
+      );
+
+      // Card title and zone controls
+      expect(screen.getByText(/Neighborhood Air Quality Heatmap/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /All/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Central/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /North/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /South/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /East/i })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /West/i })).toBeInTheDocument();
+
+      // Legend brackets
+      expect(screen.getByText(/^Good$/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Satisfactory$/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Moderate$/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Poor$/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Very Poor$/i)).toBeInTheDocument();
+      expect(screen.getByText(/^Severe$/i)).toBeInTheDocument();
+    });
+
+    it('allows switching between urban zones via interactive filter buttons', () => {
+      render(
+        <NeighborhoodMap
+          latitude={28.6139}
+          longitude={77.2090}
+          cityName="Delhi"
+          baseAqi={175}
+        />
+      );
+
+      const northBtn = screen.getByRole('button', { name: /North/i });
+      fireEvent.click(northBtn);
+      expect(northBtn).toHaveAttribute('aria-pressed', 'true');
+      expect(northBtn).toHaveClass('text-emerald-700');
     });
   });
 });

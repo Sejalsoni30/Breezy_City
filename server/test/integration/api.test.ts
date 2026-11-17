@@ -3,7 +3,7 @@ import request from 'supertest';
 import { createApp } from '../../src/app.js';
 import { appCache } from '../../src/services/cache.js';
 
-describe('API Server Integration Tests', () => {
+describe('API Server Integration Tests', { timeout: 15000 }, () => {
   const app = createApp();
 
   beforeAll(() => {

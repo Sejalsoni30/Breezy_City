@@ -54,6 +54,17 @@ export interface TrendsSummary {
   accessibleSummary: string;
 }
 
+export interface AqiCategoryInfo {
+  name: string;
+  range: [number, number];
+  color: string;
+  badgeBg: string;
+  badgeText: string;
+  description: string;
+  healthStatement: string;
+  sensitiveGroupAdvice: string;
+}
+
 export interface AirQualityApiResponse {
   standard: 'CPCB' | 'US_EPA';
   standardName: string;
@@ -65,16 +76,7 @@ export interface AirQualityApiResponse {
   };
   aqi: number | null;
   category: string | null;
-  categoryInfo: {
-    name: string;
-    range: [number, number];
-    color: string;
-    badgeBg: string;
-    badgeText: string;
-    description: string;
-    healthStatement: string;
-    sensitiveGroupAdvice: string;
-  } | null;
+  categoryInfo: AqiCategoryInfo | null;
   dominantPollutants: string[];
   pollutants: Record<
     string,

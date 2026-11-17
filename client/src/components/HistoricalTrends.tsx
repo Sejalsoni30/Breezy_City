@@ -49,7 +49,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
         if (isMounted) {
           setSeries(data.series || []);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         if (isMounted) {
           console.error('[HistoricalTrends] Error fetching data:', err);
           setError('Historical records could not be loaded.');

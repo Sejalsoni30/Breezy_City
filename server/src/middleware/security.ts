@@ -62,8 +62,8 @@ export const corsMiddleware = cors({
 
     callback(new Error('CORS request blocked by origin allowlist'));
   },
-  methods: ['GET', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Accept'],
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
   maxAge: 86400
 });
 
@@ -78,12 +78,17 @@ export const apiRateLimiter = rateLimit({
   }
 });
 
+export interface HttpError extends Error {
+  status?: number;
+  statusCode?: number;
+}
+
 /**
  * Production-safe Global Error Handler.
  * Never leaks internal stack traces or database/upstream details to clients.
  */
 export function errorHandler(
-  err: any,
+  err: HttpError,
   _req: Request,
   res: Response,
   _next: NextFunction

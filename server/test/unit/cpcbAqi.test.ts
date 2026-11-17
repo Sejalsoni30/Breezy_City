@@ -75,8 +75,7 @@ describe('India CPCB NAQI - Sub-Index Boundary Calculations', () => {
     it('returns null for negative or NaN values', () => {
       expect(calculateSubIndex('pm2_5', -10)).toBeNull();
       expect(calculateSubIndex('pm2_5', NaN)).toBeNull();
-      // @ts-expect-error invalid input test
-      expect(calculateSubIndex('pm2_5', null)).toBeNull();
+      expect(calculateSubIndex('pm2_5', null as unknown as number)).toBeNull();
     });
 
     it('returns null for unknown pollutant', () => {

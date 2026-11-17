@@ -2,6 +2,63 @@ import { GeocodingResponse, LocationItem, WeatherData } from '../types/index.js'
 
 const TIMEOUT_MS = Number(process.env.UPSTREAM_TIMEOUT_MS) || 8000;
 
+interface OpenMeteoGeocodeItem {
+  id: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  country?: string;
+  country_code?: string;
+  admin1?: string;
+  admin2?: string;
+  timezone?: string;
+}
+
+interface OpenMeteoGeocodeRawResponse {
+  results?: OpenMeteoGeocodeItem[];
+}
+
+export interface OpenMeteoAirQualityCurrent {
+  time?: string;
+  pm10?: number | null;
+  pm2_5?: number | null;
+  carbon_monoxide?: number | null;
+  nitrogen_dioxide?: number | null;
+  sulphur_dioxide?: number | null;
+  ozone?: number | null;
+  [key: string]: string | number | null | undefined;
+}
+
+export interface OpenMeteoAirQualityRawResponse {
+  current?: OpenMeteoAirQualityCurrent;
+  current_units?: Record<string, string>;
+  hourly?: {
+    time?: string[];
+    pm10?: (number | null)[];
+    pm2_5?: (number | null)[];
+    carbon_monoxide?: (number | null)[];
+    nitrogen_dioxide?: (number | null)[];
+    sulphur_dioxide?: (number | null)[];
+    ozone?: (number | null)[];
+  };
+}
+
+interface OpenMeteoWeatherRawResponse {
+  current?: {
+    temperature_2m?: number;
+    relative_humidity_2m?: number;
+    wind_speed_10m?: number;
+    wind_direction_10m?: number;
+    weather_code?: number;
+    time?: string;
+  };
+  current_units?: {
+    temperature_2m?: string;
+    relative_humidity_2m?: string;
+    wind_speed_10m?: string;
+  };
+}
+
 export function getWeatherDescription(code: number | null): string {
   if (code === null || code === undefined) return 'Unknown';
   if (code === 0) return 'Clear sky';
@@ -32,12 +89,12 @@ export async function searchLocations(query: string): Promise<GeocodingResponse>
     throw new Error(`Geocoding upstream error: ${response.status}`);
   }
 
-  const data: any = await response.json();
+  const data = (await response.json()) as OpenMeteoGeocodeRawResponse;
   if (!data.results || !Array.isArray(data.results)) {
     return { query, count: 0, results: [] };
   }
 
-  const results: LocationItem[] = data.results.map((item: any) => {
+  const results: LocationItem[] = data.results.map((item: OpenMeteoGeocodeItem) => {
     const parts = [item.name];
     if (item.admin1 && item.admin1 !== item.name) parts.push(item.admin1);
     if (item.country) parts.push(item.country);
@@ -67,7 +124,7 @@ export async function searchLocations(query: string): Promise<GeocodingResponse>
 /**
  * Fetches Air Quality metrics from Open-Meteo Air Quality API.
  */
-export async function fetchRawAirQuality(lat: number, lon: number): Promise<any> {
+export async function fetchRawAirQuality(lat: number, lon: number): Promise<OpenMeteoAirQualityRawResponse> {
   const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&hourly=pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone&past_days=1&forecast_days=2`;
 
   const response = await fetch(url, {
@@ -79,7 +136,7 @@ export async function fetchRawAirQuality(lat: number, lon: number): Promise<any>
     throw new Error(`Air quality upstream error: ${response.status}`);
   }
 
-  return response.json();
+  return (await response.json()) as OpenMeteoAirQualityRawResponse;
 }
 
 /**
@@ -97,7 +154,7 @@ export async function fetchRawWeather(lat: number, lon: number): Promise<Weather
     throw new Error(`Weather upstream error: ${response.status}`);
   }
 
-  const data: any = await response.json();
+  const data = (await response.json()) as OpenMeteoWeatherRawResponse;
   const current = data.current || {};
   const currentUnits = data.current_units || {};
 
@@ -110,7 +167,7 @@ export async function fetchRawWeather(lat: number, lon: number): Promise<Weather
     windSpeedUnit: currentUnits.wind_speed_10m || 'km/h',
     windDirection: current.wind_direction_10m ?? null,
     weatherCode: current.weather_code ?? null,
-    weatherDescription: getWeatherDescription(current.weather_code),
+    weatherDescription: getWeatherDescription(current.weather_code ?? null),
     timestamp: current.time || new Date().toISOString(),
     source: 'Open-Meteo Weather Forecast Model',
     dataState: 'Live'

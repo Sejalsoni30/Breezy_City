@@ -61,7 +61,7 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
 
       const data: AdvisoryState = await response.json();
       setAdvisory(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[AiHealthAssistant] Error fetching advisory:', err);
       setError('Unable to load AI advisory. Please try again.');
     } finally {

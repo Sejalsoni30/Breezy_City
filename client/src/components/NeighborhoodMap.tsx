@@ -35,6 +35,15 @@ function getCategoryAndColor(aqi: number): { category: string; color: string; bg
   return { category: 'Severe', color: '#7f1d1d', bg: '#fecaca' };
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
   latitude,
   longitude,
@@ -171,13 +180,13 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
       const popupHtml = `
         <div style="font-family: ui-sans-serif, system-ui, sans-serif; padding: 4px 2px; min-width: 170px;">
           <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
-            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.05em;">${station.zone} Sector</span>
+            <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #64748b; letter-spacing: 0.05em;">${escapeHtml(station.zone)} Sector</span>
             <span style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 9999px; background: ${station.color}15; color: ${station.color}; border: 1px solid ${station.color}40;">
-              ${station.category}
+              ${escapeHtml(station.category)}
             </span>
           </div>
           <div style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-            ${station.name}
+            ${escapeHtml(station.name)}
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; background: #f8fafc; padding: 6px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 11px;">
             <div>
@@ -190,7 +199,7 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
             </div>
           </div>
           <div style="margin-top: 6px; font-size: 10px; color: #475569; display: flex; justify-content: space-between;">
-            <span>Dominant: <strong>${station.dominantPollutant}</strong></span>
+            <span>Dominant: <strong>${escapeHtml(station.dominantPollutant)}</strong></span>
             <span style="color: #16a34a;">● Live Node</span>
           </div>
         </div>

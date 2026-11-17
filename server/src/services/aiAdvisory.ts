@@ -15,6 +15,14 @@ export interface AiAdvisoryResponse {
   isAIGenerated: boolean;
 }
 
+interface GeminiApiResponse {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{ text?: string }>;
+    };
+  }>;
+}
+
 export async function generateAiHealthAdvisory(
   aqi: number,
   category: string,
@@ -54,7 +62,7 @@ Respond ONLY with raw JSON.`;
       );
 
       if (response.ok) {
-        const json: any = await response.json();
+        const json = (await response.json()) as GeminiApiResponse;
         const text = json.candidates?.[0]?.content?.parts?.[0]?.text;
         if (text) {
           const cleaned = text.replace(/```json/g, '').replace(/```/g, '').trim();
