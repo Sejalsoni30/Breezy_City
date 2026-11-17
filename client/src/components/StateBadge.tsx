@@ -18,7 +18,10 @@ export const StateBadge: React.FC<StateBadgeProps> = ({ state, ageSeconds }) => 
     case 'Live':
       return (
         <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" aria-hidden="true" />
+          <span
+            className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"
+            aria-hidden="true"
+          />
           <Radio className="w-3 h-3" aria-hidden="true" />
           <span>Live Data</span>
         </span>

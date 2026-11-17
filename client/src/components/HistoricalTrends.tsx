@@ -43,7 +43,9 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
       setIsLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/historical-trends?lat=${latitude}&lon=${longitude}&days=${days}`);
+        const res = await fetch(
+          `/api/historical-trends?lat=${latitude}&lon=${longitude}&days=${days}`
+        );
         if (!res.ok) throw new Error('Failed to fetch historical trends');
         const data: TrendApiResponse = await res.json();
         if (isMounted) {
@@ -71,7 +73,9 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
   const maxAqi = validAqis.length > 0 ? Math.max(...validAqis) : null;
   const validPm25 = series.filter((d) => d.avgPm25 != null).map((d) => d.avgPm25 as number);
   const avgPm25Val =
-    validPm25.length > 0 ? Math.round(validPm25.reduce((a, b) => a + b, 0) / validPm25.length) : null;
+    validPm25.length > 0
+      ? Math.round(validPm25.reduce((a, b) => a + b, 0) / validPm25.length)
+      : null;
 
   return (
     <section
@@ -85,7 +89,10 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
             <TrendingUp className="w-5 h-5" aria-hidden="true" />
           </div>
           <div>
-            <h2 id="historical-trends-title" className="text-lg font-bold text-slate-900 flex items-center gap-1.5">
+            <h2
+              id="historical-trends-title"
+              className="text-lg font-bold text-slate-900 flex items-center gap-1.5"
+            >
               <span>Historical AQI Trends & Analytics</span>
               <Sparkles className="w-3.5 h-3.5 text-blue-500" aria-hidden="true" />
             </h2>
@@ -106,7 +113,9 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
               type="button"
               onClick={() => setDays(7)}
               className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
-                days === 7 ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                days === 7
+                  ? 'bg-white text-blue-700 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
               aria-pressed={days === 7}
             >
@@ -116,7 +125,9 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
               type="button"
               onClick={() => setDays(30)}
               className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
-                days === 30 ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                days === 30
+                  ? 'bg-white text-blue-700 shadow-2xs'
+                  : 'text-slate-600 hover:text-slate-900'
               }`}
               aria-pressed={days === 30}
             >
@@ -144,9 +155,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
           <div className="text-[11px] font-semibold text-slate-600 uppercase tracking-wide">
             Lowest (Cleanest) AQI
           </div>
-          <div className="text-xl font-extrabold text-emerald-700 mt-1">
-            {minAqi ?? '—'}
-          </div>
+          <div className="text-xl font-extrabold text-emerald-700 mt-1">{minAqi ?? '—'}</div>
           <p className="text-[11px] text-slate-600 mt-0.5">Best atmospheric day in period</p>
         </div>
 
@@ -154,9 +163,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
           <div className="text-[11px] font-semibold text-slate-600 uppercase tracking-wide">
             Peak (Worst) AQI
           </div>
-          <div className="text-xl font-extrabold text-rose-700 mt-1">
-            {maxAqi ?? '—'}
-          </div>
+          <div className="text-xl font-extrabold text-rose-700 mt-1">{maxAqi ?? '—'}</div>
           <p className="text-[11px] text-slate-600 mt-0.5">Peak particulate burden detected</p>
         </div>
 
@@ -189,11 +196,21 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
             </caption>
             <thead>
               <tr className="bg-slate-100 text-slate-800 font-semibold border-b border-slate-200">
-                <th scope="col" className="px-3 py-2 border-r border-slate-200">Date</th>
-                <th scope="col" className="px-3 py-2 border-r border-slate-200">Estimated AQI</th>
-                <th scope="col" className="px-3 py-2 border-r border-slate-200">Category</th>
-                <th scope="col" className="px-3 py-2 border-r border-slate-200">Avg PM2.5 (µg/m³)</th>
-                <th scope="col" className="px-3 py-2">Avg PM10 (µg/m³)</th>
+                <th scope="col" className="px-3 py-2 border-r border-slate-200">
+                  Date
+                </th>
+                <th scope="col" className="px-3 py-2 border-r border-slate-200">
+                  Estimated AQI
+                </th>
+                <th scope="col" className="px-3 py-2 border-r border-slate-200">
+                  Category
+                </th>
+                <th scope="col" className="px-3 py-2 border-r border-slate-200">
+                  Avg PM2.5 (µg/m³)
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Avg PM10 (µg/m³)
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -218,9 +235,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
                   <td className="px-3 py-2 border-r border-slate-200 text-slate-700">
                     {row.avgPm25 ?? '—'}
                   </td>
-                  <td className="px-3 py-2 text-slate-700">
-                    {row.avgPm10 ?? '—'}
-                  </td>
+                  <td className="px-3 py-2 text-slate-700">{row.avgPm10 ?? '—'}</td>
                 </tr>
               ))}
             </tbody>
@@ -251,10 +266,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
                   return parts.length === 3 ? `${parts[1]}/${parts[2]}` : val;
                 }}
               />
-              <YAxis
-                tick={{ fontSize: 11, fill: '#64748b' }}
-                domain={[0, 'auto']}
-              />
+              <YAxis tick={{ fontSize: 11, fill: '#64748b' }} domain={[0, 'auto']} />
               <Tooltip
                 content={({ active, payload, label }) => {
                   if (active && payload && payload.length) {

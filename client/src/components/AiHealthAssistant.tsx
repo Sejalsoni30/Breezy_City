@@ -85,7 +85,10 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
             <Bot className="w-5 h-5" aria-hidden="true" />
           </div>
           <div>
-            <h2 id="ai-advisory-title" className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <h2
+              id="ai-advisory-title"
+              className="text-lg font-bold text-slate-900 flex items-center gap-2"
+            >
               <span>Personalized AI Health Advisory</span>
               <Sparkles className="w-4 h-4 text-indigo-500" aria-hidden="true" />
             </h2>
@@ -98,7 +101,10 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
         {advisory && (
           <div className="flex items-center self-start sm:self-center">
             <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-medium bg-indigo-100 text-indigo-800 border border-indigo-200">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-600 mr-1.5 animate-pulse" aria-hidden="true" />
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-indigo-600 mr-1.5 animate-pulse"
+                aria-hidden="true"
+              />
               {advisory.source}
             </span>
           </div>
@@ -168,9 +174,7 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
             <h3 className="text-xs font-bold uppercase tracking-wider text-indigo-700">
               Exposure Assessment
             </h3>
-            <p className="text-sm font-medium text-slate-900 leading-relaxed">
-              {advisory.advice}
-            </p>
+            <p className="text-sm font-medium text-slate-900 leading-relaxed">{advisory.advice}</p>
           </div>
 
           {/* Targeted Action Points */}
@@ -188,9 +192,7 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
                     className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"
                     aria-hidden="true"
                   />
-                  <span className="text-xs text-slate-800 leading-relaxed font-medium">
-                    {rec}
-                  </span>
+                  <span className="text-xs text-slate-800 leading-relaxed font-medium">{rec}</span>
                 </div>
               ))}
             </div>

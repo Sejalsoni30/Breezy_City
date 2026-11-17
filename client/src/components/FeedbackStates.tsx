@@ -80,7 +80,9 @@ export const EmptyState: React.FC = () => {
       </div>
       <h2 className="text-xl font-bold text-slate-900">Find Air Quality for Any City</h2>
       <p className="text-sm text-slate-600 leading-relaxed">
-        Search for your city above (e.g., Delhi, Mumbai, Bengaluru, London, New York) or use your current location to inspect live atmospheric model readings, CPCB NAQI calculations, and health guidance.
+        Search for your city above (e.g., Delhi, Mumbai, Bengaluru, London, New York) or use your
+        current location to inspect live atmospheric model readings, CPCB NAQI calculations, and
+        health guidance.
       </p>
     </div>
   );

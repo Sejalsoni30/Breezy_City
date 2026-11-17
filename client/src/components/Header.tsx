@@ -8,7 +8,10 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ activeStandard, onStandardChange }) => {
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm" role="banner">
+    <header
+      className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm"
+      role="banner"
+    >
       {/* Skip to main content link for keyboard users (WCAG 2.1 AA) */}
       <a
         href="#main-content"

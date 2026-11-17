@@ -1,6 +1,6 @@
 /**
  * Official India CPCB (Central Pollution Control Board) NAQI Breakpoints
- * 
+ *
  * Source: "National Air Quality Index", Central Pollution Control Board,
  * Ministry of Environment, Forest & Climate Change, Government of India.
  * Publication Edition: October 2014, Table 1 & Table 2.
@@ -16,13 +16,7 @@ export interface BreakpointRange {
   category: AqiCategory;
 }
 
-export type AqiCategory =
-  | 'Good'
-  | 'Satisfactory'
-  | 'Moderate'
-  | 'Poor'
-  | 'Very Poor'
-  | 'Severe';
+export type AqiCategory = 'Good' | 'Satisfactory' | 'Moderate' | 'Poor' | 'Very Poor' | 'Severe';
 
 export interface CategoryInfo {
   name: AqiCategory;
@@ -42,7 +36,8 @@ export const CPCB_CATEGORIES: Record<AqiCategory, CategoryInfo> = {
     color: '#16a34a',
     badgeBg: 'bg-green-100',
     badgeText: 'text-green-800',
-    description: 'Minimal impact. Air quality is considered satisfactory, and air pollution poses little or no risk.',
+    description:
+      'Minimal impact. Air quality is considered satisfactory, and air pollution poses little or no risk.',
     healthStatement: 'Minimal health impact. Ideal for outdoor activities.',
     sensitiveGroupAdvice: 'Safe for everyone, including children and elderly.'
   },
@@ -53,8 +48,10 @@ export const CPCB_CATEGORIES: Record<AqiCategory, CategoryInfo> = {
     badgeBg: 'bg-lime-100',
     badgeText: 'text-lime-800',
     description: 'Minor breathing discomfort to sensitive people.',
-    healthStatement: 'May cause minor breathing discomfort to sensitive people with lung or heart disease.',
-    sensitiveGroupAdvice: 'Unusually sensitive individuals should consider reducing prolonged or heavy outdoor exertion.'
+    healthStatement:
+      'May cause minor breathing discomfort to sensitive people with lung or heart disease.',
+    sensitiveGroupAdvice:
+      'Unusually sensitive individuals should consider reducing prolonged or heavy outdoor exertion.'
   },
   Moderate: {
     name: 'Moderate',
@@ -63,8 +60,10 @@ export const CPCB_CATEGORIES: Record<AqiCategory, CategoryInfo> = {
     badgeBg: 'bg-amber-100',
     badgeText: 'text-amber-800',
     description: 'Breathing discomfort to the people with lungs, asthma and heart diseases.',
-    healthStatement: 'May cause breathing discomfort to people with asthma and heart diseases, and children/elderly.',
-    sensitiveGroupAdvice: 'People with asthma or heart ailments should limit heavy outdoor exertion.'
+    healthStatement:
+      'May cause breathing discomfort to people with asthma and heart diseases, and children/elderly.',
+    sensitiveGroupAdvice:
+      'People with asthma or heart ailments should limit heavy outdoor exertion.'
   },
   Poor: {
     name: 'Poor',
@@ -74,7 +73,8 @@ export const CPCB_CATEGORIES: Record<AqiCategory, CategoryInfo> = {
     badgeText: 'text-orange-800',
     description: 'Breathing discomfort to most people on prolonged exposure.',
     healthStatement: 'Causes breathing discomfort to most people on prolonged outdoor exposure.',
-    sensitiveGroupAdvice: 'Children, older adults, and people with respiratory illness should avoid prolonged outdoor exertion.'
+    sensitiveGroupAdvice:
+      'Children, older adults, and people with respiratory illness should avoid prolonged outdoor exertion.'
   },
   'Very Poor': {
     name: 'Very Poor',
@@ -83,8 +83,10 @@ export const CPCB_CATEGORIES: Record<AqiCategory, CategoryInfo> = {
     badgeBg: 'bg-red-100',
     badgeText: 'text-red-800',
     description: 'Respiratory illness on prolonged exposure.',
-    healthStatement: 'May cause respiratory illness on prolonged exposure. Significant risk to all population groups.',
-    sensitiveGroupAdvice: 'Everyone should avoid prolonged outdoor exertion. Sensitive groups should stay indoors and keep activity levels low.'
+    healthStatement:
+      'May cause respiratory illness on prolonged exposure. Significant risk to all population groups.',
+    sensitiveGroupAdvice:
+      'Everyone should avoid prolonged outdoor exertion. Sensitive groups should stay indoors and keep activity levels low.'
   },
   Severe: {
     name: 'Severe',
@@ -93,8 +95,10 @@ export const CPCB_CATEGORIES: Record<AqiCategory, CategoryInfo> = {
     badgeBg: 'bg-rose-950',
     badgeText: 'text-rose-100',
     description: 'Affects healthy people and seriously impacts those with existing diseases.',
-    healthStatement: 'Health warning of emergency conditions. Entire population is likely to be affected.',
-    sensitiveGroupAdvice: 'Everyone should avoid all outdoor physical activity. Sensitive individuals should remain indoors and use air purifiers.'
+    healthStatement:
+      'Health warning of emergency conditions. Entire population is likely to be affected.',
+    sensitiveGroupAdvice:
+      'Everyone should avoid all outdoor physical activity. Sensitive individuals should remain indoors and use air purifiers.'
   }
 };
 

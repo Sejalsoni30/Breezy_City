@@ -20,12 +20,15 @@
     "test:server": "npm run test --workspace=server",
     "test:client": "npm run test --workspace=client",
     "test:e2e": "playwright test",
-    "lint": "npm run lint --workspace=server && npm run lint --workspace=client"
+    "lint": "npm run lint --workspace=server && npm run lint --workspace=client",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md}\""
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
     "concurrently": "^9.1.2",
-    "playwright": "^1.65.1"
+    "playwright": "^1.65.1",
+    "prettier": "^3.10.1"
   },
   "overrides": {
     "tinypool": "^2.2.0",

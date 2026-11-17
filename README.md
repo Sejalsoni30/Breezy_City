@@ -8,9 +8,10 @@
 [![Hack2Skill Submission](https://img.shields.io/badge/Challenge%206-Prompt%20Wars-6366f1?style=for-the-badge&logo=google&logoColor=white)](https://breezy-city-51hh.onrender.com)
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Tests-44%20Passed-10b981?style=flat-square&logo=vitest&logoColor=white" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-84%20Passed-10b981?style=flat-square&logo=vitest&logoColor=white" alt="Tests" />
   <img src="https://img.shields.io/badge/WCAG%202.1%20AA-100%25%20Axe%20Clean-3b82f6?style=flat-square&logo=w3c&logoColor=white" alt="Accessibility" />
   <img src="https://img.shields.io/badge/Lighthouse-100%2F100-34d399?style=flat-square&logo=lighthouse&logoColor=white" alt="Lighthouse" />
+  <img src="https://img.shields.io/badge/Vulnerabilities-0%20Clean-10b981?style=flat-square&logo=snyk&logoColor=white" alt="Security" />
   <img src="https://img.shields.io/badge/Standard-India%20CPCB%20NAQI-f97316?style=flat-square" alt="CPCB NAQI" />
   <img src="https://img.shields.io/badge/AI%20Assistant-Gemini%201.5%20Flash-8b5cf6?style=flat-square&logo=google&logoColor=white" alt="Gemini AI" />
   <img src="https://img.shields.io/badge/Mapping-Leaflet%20%2B%20Esri%20GIS-0284c7?style=flat-square&logo=leaflet&logoColor=white" alt="Leaflet" />
@@ -164,22 +165,77 @@ cd Breezy_City
 npm install
 ```
 
-### 2. Environment Configuration
+### 2. Environment Variables Configuration
+
+Copy `.env.example` to `.env` and set values as needed:
 ```bash
 cp .env.example .env
-# Optional: add GEMINI_API_KEY for generative AI, or run zero-config with offline fallback
 ```
 
-### 3. Development Mode
-```bash
-# Starts both Express backend (:3001) and Vite client (:5173) concurrently
-npm run dev
+| Variable | Default | Required | Purpose |
+| :--- | :--- | :--- | :--- |
+| `PORT` | `3001` | No | Express HTTP server listen port |
+| `NODE_ENV` | `development` | No | Node environment (`development` / `production` / `test`) |
+| `CLIENT_ORIGIN` | `http://localhost:5173` | No | Allowed frontend origin for CORS |
+| `CACHE_TTL_SECONDS` | `900` | No | In-memory cache TTL for AQI responses (15 minutes) |
+| `RATE_LIMIT_WINDOW_MS` | `60000` | No | Rate limiting time window in milliseconds (1 min) |
+| `RATE_LIMIT_MAX` | `100` | No | Max requests allowed per window per IP |
+| `UPSTREAM_TIMEOUT_MS` | `8000` | No | Upstream API timeout in milliseconds (8s) |
+| `GEMINI_API_KEY` | *(empty)* | Optional | Google Gemini 1.5 Flash API key for personalized generative AI advice |
+
+---
+
+### 3. Available NPM Scripts
+
+| Script | Command | Purpose |
+| :--- | :--- | :--- |
+| `npm run dev` | `concurrently ...` | Run backend (:3001) and Vite frontend (:5173) in watch mode |
+| `npm run build` | `tsc && vite build` | Compile TypeScript and bundle production client/server assets |
+| `npm start` | `node server/dist/server.js` | Start production Express server serving client SPA |
+| `npm test` | `vitest run` | Run all 84 automated unit, integration, and UI tests |
+| `npm run test:coverage` | `vitest run --coverage` | Generate code coverage metrics report |
+| `npm run lint` | `tsc --noEmit` | Strict TypeScript compiler check across workspaces (0 errors) |
+| `npm run format` | `prettier --write ...` | Format all source files according to `.prettierrc.json` |
+
+---
+
+### 4. Repository Folder Structure
+
+```
+Urban Air Quality Assistant/
+├── .env.example              # Documented environment template
+├── .prettierrc.json          # Prettier code formatting rules
+├── package.json              # Monorepo workspaces root configuration
+├── client/                   # React + TypeScript + Vite SPA Frontend
+│   ├── src/
+│   │   ├── components/       # Single-purpose UI components (AqiHero, Map, AI, Trends)
+│   │   ├── config/           # Centralized client constants & coordinates
+│   │   ├── utils/            # Sanitization (XSS) and map node generators
+│   │   ├── types.ts          # Frontend TypeScript interface models
+│   │   └── App.tsx           # Dashboard root orchestrator with fallback state
+│   └── test/                 # Vitest + React Testing Library component tests
+└── server/                   # Node.js + Express + TypeScript Backend
+    ├── src/
+    │   ├── aqi/              # CPCB & US EPA mathematical calculation engines
+    │   ├── config/           # Centralized server constants & endpoint configs
+    │   ├── controllers/      # Single-purpose request handler controllers
+    │   ├── middleware/       # Helmet security, CORS, rate limiting & Zod validation
+    │   ├── routes/           # Declarative API routing table
+    │   ├── services/         # Open-Meteo client, Gemini AI, in-memory cache, DB
+    │   └── types/            # Shared type models & API response schemas
+    └── test/                 # Unit & integration test suites (84 tests)
 ```
 
-### 4. Production Build & Test
+---
+
+### 5. Production Build & Test
 ```bash
-# Run all 44 automated unit, integration, and component tests
+# Run all 84 automated unit, integration, and component tests
 npm test
+
+# Check type safety and formatting
+npm run lint
+npm run format:check
 
 # Build production distribution assets
 npm run build
@@ -205,7 +261,7 @@ docker run -p 3001:3001 breezy-city
 
 ## 📊 Verification & Audit Results
 
-* **Automated Unit & Integration Tests**: 44 / 44 passed (`100% pass rate`).
+* **Automated Unit & Integration Tests**: 84 / 84 passed (`100% pass rate`).
 * **Automated Accessibility (Axe-Core)**: 0 violations across 360px mobile, 768px tablet, and 1280px desktop.
 * **Lighthouse Audit**:
   * Accessibility: **100 / 100**

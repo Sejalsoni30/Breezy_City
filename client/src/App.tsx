@@ -6,7 +6,12 @@ import { PollutantGrid } from './components/PollutantGrid';
 import { HealthGuidance } from './components/HealthGuidance';
 import { WeatherContext } from './components/WeatherContext';
 import { DataAttribution } from './components/DataAttribution';
-import { LoadingSkeleton, ErrorBanner, OfflineNotice, EmptyState } from './components/FeedbackStates';
+import {
+  LoadingSkeleton,
+  ErrorBanner,
+  OfflineNotice,
+  EmptyState
+} from './components/FeedbackStates';
 import { LocationItem, AirQualityApiResponse, WeatherData } from './types';
 import { Star } from 'lucide-react';
 
@@ -86,25 +91,35 @@ export const App: React.FC = () => {
           setFavorites((prev) => {
             const map = new Map<string, LocationItem>();
             prev.forEach((p) => map.set(`${p.latitude.toFixed(2)},${p.longitude.toFixed(2)}`, p));
-            data.bookmarks.forEach((b: { id?: string | number; name: string; latitude: number; longitude: number; displayName?: string }) => {
-              const key = `${Number(b.latitude).toFixed(2)},${Number(b.longitude).toFixed(2)}`;
-              if (!map.has(key)) {
-                map.set(key, {
-                  id: typeof b.id === 'number' ? b.id : (b.id ? Number(b.id) : Date.now()),
-                  name: b.name,
-                  latitude: b.latitude,
-                  longitude: b.longitude,
-                  country: '',
-                  countryCode: '',
-                  timezone: 'UTC',
-                  displayName: b.displayName || b.name
-                });
+            data.bookmarks.forEach(
+              (b: {
+                id?: string | number;
+                name: string;
+                latitude: number;
+                longitude: number;
+                displayName?: string;
+              }) => {
+                const key = `${Number(b.latitude).toFixed(2)},${Number(b.longitude).toFixed(2)}`;
+                if (!map.has(key)) {
+                  map.set(key, {
+                    id: typeof b.id === 'number' ? b.id : b.id ? Number(b.id) : Date.now(),
+                    name: b.name,
+                    latitude: b.latitude,
+                    longitude: b.longitude,
+                    country: '',
+                    countryCode: '',
+                    timezone: 'UTC',
+                    displayName: b.displayName || b.name
+                  });
+                }
               }
-            });
+            );
             const merged = Array.from(map.values());
             try {
               localStorage.setItem(STORAGE_KEY_FAVORITES, JSON.stringify(merged));
-            } catch {}
+            } catch (e) {
+              console.warn('Local storage write warning:', e);
+            }
             return merged;
           });
         }
@@ -118,10 +133,18 @@ export const App: React.FC = () => {
   const toggleFavorite = (loc: LocationItem) => {
     setFavorites((prev) => {
       const exists = prev.some(
-        (f) => Math.abs(f.latitude - loc.latitude) < 0.001 && Math.abs(f.longitude - loc.longitude) < 0.001
+        (f) =>
+          Math.abs(f.latitude - loc.latitude) < 0.001 &&
+          Math.abs(f.longitude - loc.longitude) < 0.001
       );
       const next = exists
-        ? prev.filter((f) => !(Math.abs(f.latitude - loc.latitude) < 0.001 && Math.abs(f.longitude - loc.longitude) < 0.001))
+        ? prev.filter(
+            (f) =>
+              !(
+                Math.abs(f.latitude - loc.latitude) < 0.001 &&
+                Math.abs(f.longitude - loc.longitude) < 0.001
+              )
+          )
         : [...prev, loc];
 
       try {
@@ -132,7 +155,9 @@ export const App: React.FC = () => {
 
       // Sync with backend DB
       if (exists) {
-        fetch(`/api/bookmarks/${loc.id}`, { method: 'DELETE' }).catch(() => {});
+        fetch(`/api/bookmarks/${loc.id}`, { method: 'DELETE' }).catch((err) => {
+          console.warn('Remote bookmark delete notice:', err);
+        });
       } else {
         fetch('/api/bookmarks', {
           method: 'POST',
@@ -143,7 +168,9 @@ export const App: React.FC = () => {
             latitude: loc.latitude,
             longitude: loc.longitude
           })
-        }).catch(() => {});
+        }).catch((err) => {
+          console.warn('Remote bookmark sync notice:', err);
+        });
       }
 
       return next;
@@ -204,7 +231,10 @@ export const App: React.FC = () => {
         }
       } catch (err: unknown) {
         console.error('[App] Failed to load data:', err);
-        const errMessage = err instanceof Error ? err.message : 'An error occurred while fetching atmospheric data. Please check your connection.';
+        const errMessage =
+          err instanceof Error
+            ? err.message
+            : 'An error occurred while fetching atmospheric data. Please check your connection.';
         setError(errMessage);
       } finally {
         setIsLoading(false);
@@ -292,10 +322,7 @@ export const App: React.FC = () => {
             <PollutantGrid pollutants={airQuality.pollutants} />
 
             {/* Health Advisory & Exposure Reduction */}
-            <HealthGuidance
-              guidance={airQuality.healthGuidance}
-              category={airQuality.category}
-            />
+            <HealthGuidance guidance={airQuality.healthGuidance} category={airQuality.category} />
 
             {/* Personalized AI Health Advisory Assistant */}
             <Suspense
@@ -380,7 +407,8 @@ export const App: React.FC = () => {
       <footer className="bg-white border-t border-slate-200 py-6 text-xs text-slate-600 text-center space-y-2 mt-auto">
         <div className="max-w-7xl mx-auto px-4 space-y-1">
           <p>
-            <strong>Urban Air Quality Assistant</strong> • India CPCB National Air Quality Index (NAQI) & US EPA AQI Standards.
+            <strong>Urban Air Quality Assistant</strong> • India CPCB National Air Quality Index
+            (NAQI) & US EPA AQI Standards.
           </p>
           <p>
             Atmospheric model data powered by{' '}

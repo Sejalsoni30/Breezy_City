@@ -1,6 +1,6 @@
 /**
  * AI Health Advisory Service (Google Gemini / Guardrailed Fallback)
- * 
+ *
  * Complies with brief Section 5.3:
  * - Server-side API key handling
  * - Strict informational guardrails (never diagnose, prescribe, or fabricate health claims)
@@ -65,7 +65,10 @@ Respond ONLY with raw JSON.`;
         const json = (await response.json()) as GeminiApiResponse;
         const text = json.candidates?.[0]?.content?.parts?.[0]?.text;
         if (text) {
-          const cleaned = text.replace(/```json/g, '').replace(/```/g, '').trim();
+          const cleaned = text
+            .replace(/```json/g, '')
+            .replace(/```/g, '')
+            .trim();
           const parsed = JSON.parse(cleaned);
           if (parsed.advice && Array.isArray(parsed.recommendations)) {
             return {
@@ -79,7 +82,10 @@ Respond ONLY with raw JSON.`;
         }
       }
     } catch (err) {
-      console.warn('[AI Service] Gemini call failed or key absent, falling back to deterministic advice:', err);
+      console.warn(
+        '[AI Service] Gemini call failed or key absent, falling back to deterministic advice:',
+        err
+      );
     }
   }
 
@@ -87,7 +93,8 @@ Respond ONLY with raw JSON.`;
   const adviceMap: Record<string, Record<string, { advice: string; recommendations: string[] }>> = {
     general: {
       Good: {
-        advice: 'Air quality is optimal. Outdoor activities and natural ventilation are safe and encouraged.',
+        advice:
+          'Air quality is optimal. Outdoor activities and natural ventilation are safe and encouraged.',
         recommendations: [
           'Enjoy outdoor sports and workouts without concern.',
           'Open windows to ventilate living and workspaces.',
@@ -103,7 +110,8 @@ Respond ONLY with raw JSON.`;
         ]
       },
       Moderate: {
-        advice: 'Moderate air pollution detected. Breathing discomfort possible for sensitive individuals.',
+        advice:
+          'Moderate air pollution detected. Breathing discomfort possible for sensitive individuals.',
         recommendations: [
           'Schedule high-intensity cardio before peak traffic hours.',
           'Close windows facing major traffic intersections.',
@@ -111,7 +119,8 @@ Respond ONLY with raw JSON.`;
         ]
       },
       Poor: {
-        advice: 'Unhealthy air conditions. Prolonged outdoor exertion causes respiratory discomfort.',
+        advice:
+          'Unhealthy air conditions. Prolonged outdoor exertion causes respiratory discomfort.',
         recommendations: [
           'Wear a well-fitted N95 or equivalent respirator when commuting outdoors.',
           'Run indoor HEPA air filtration in living and sleeping areas.',
@@ -337,14 +346,15 @@ Respond ONLY with raw JSON.`;
     }
   };
 
-  const profileData = adviceMap[userProfile]?.[category] || adviceMap['general'][category] || {
-    advice: `Maintain caution with current ${category} air quality.`,
-    recommendations: [
-      'Limit prolonged outdoor exertion.',
-      'Check local air quality before heading outside.',
-      'Wear protective masks if sensitive to airborne particulates.'
-    ]
-  };
+  const profileData = adviceMap[userProfile]?.[category] ||
+    adviceMap['general'][category] || {
+      advice: `Maintain caution with current ${category} air quality.`,
+      recommendations: [
+        'Limit prolonged outdoor exertion.',
+        'Check local air quality before heading outside.',
+        'Wear protective masks if sensitive to airborne particulates.'
+      ]
+    };
 
   return {
     source: 'Clinical Environmental Health Matrix (Guardrailed Fallback)',

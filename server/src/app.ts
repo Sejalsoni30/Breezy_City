@@ -1,7 +1,13 @@
 import express, { Express } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { securityHeaders, corsMiddleware, apiRateLimiter, errorHandler } from './middleware/security.js';
+import {
+  securityHeaders,
+  permissionsPolicy,
+  corsMiddleware,
+  apiRateLimiter,
+  errorHandler
+} from './middleware/security.js';
 import { apiRouter } from './routes/api.js';
 
 export function createApp(): Express {
@@ -9,6 +15,7 @@ export function createApp(): Express {
 
   // Basic security headers
   app.use(securityHeaders);
+  app.use(permissionsPolicy);
   app.use(express.json({ limit: '10kb' }));
 
   // Apply CORS and rate limiting specifically to /api routes

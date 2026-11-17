@@ -101,8 +101,7 @@ export function processTrends(
   let direction: 'improving' | 'deteriorating' | 'stable' = 'stable';
   if (validHistoryAqis.length >= 3 && validForecastAqis.length >= 3) {
     const recentHistoryAvg =
-      validHistoryAqis.slice(-6).reduce((a, b) => a + b, 0) /
-      validHistoryAqis.slice(-6).length;
+      validHistoryAqis.slice(-6).reduce((a, b) => a + b, 0) / validHistoryAqis.slice(-6).length;
     const upcomingForecastAvg =
       validForecastAqis.slice(0, 6).reduce((a, b) => a + b, 0) /
       validForecastAqis.slice(0, 6).length;

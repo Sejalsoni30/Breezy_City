@@ -20,7 +20,8 @@ const POLLUTANT_METAS: PollutantMeta[] = [
     name: 'Particulate Matter 2.5',
     chemicalFormula: 'PM₂.₅',
     averagingPeriod: '24-hour average',
-    sourceDesc: 'Fine inhalable particles from vehicles, biomass burning, and industrial combustion.'
+    sourceDesc:
+      'Fine inhalable particles from vehicles, biomass burning, and industrial combustion.'
   },
   {
     key: 'pm10',
@@ -147,11 +148,15 @@ export const PollutantGrid: React.FC<PollutantGridProps> = ({ pollutants }) => {
                   {isAvailable ? (
                     <span>
                       Sub-Index:{' '}
-                      <strong className="text-slate-900 font-semibold">{detail.subIndex}</strong> / 500
+                      <strong className="text-slate-900 font-semibold">{detail.subIndex}</strong> /
+                      500
                     </span>
                   ) : (
                     <span className="text-slate-500 flex items-center space-x-1">
-                      <AlertCircle className="w-3.5 h-3.5 text-amber-600 inline" aria-hidden="true" />
+                      <AlertCircle
+                        className="w-3.5 h-3.5 text-amber-600 inline"
+                        aria-hidden="true"
+                      />
                       <span>Excluded from overall index</span>
                     </span>
                   )}

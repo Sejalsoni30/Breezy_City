@@ -85,10 +85,16 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
   };
 
   return (
-    <section aria-labelledby="trends-heading" className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5">
+    <section
+      aria-labelledby="trends-heading"
+      className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5"
+    >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
         <div>
-          <h2 id="trends-heading" className="text-xl font-bold text-slate-900 flex items-center space-x-2">
+          <h2
+            id="trends-heading"
+            className="text-xl font-bold text-slate-900 flex items-center space-x-2"
+          >
             <span>Air Quality Trajectory & 24h Forecast</span>
           </h2>
           <p className="text-xs text-slate-500">
@@ -116,9 +122,15 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
         <p className="font-semibold text-slate-900 mb-1">Accessible Trajectory Summary:</p>
         <p>{summary.accessibleSummary}</p>
         <div className="mt-2 flex flex-wrap gap-4 text-slate-600">
-          <span>Minimum AQI: <strong>{summary.minAqi ?? '--'}</strong></span>
-          <span>Average AQI: <strong>{summary.avgAqi ?? '--'}</strong></span>
-          <span>Peak AQI: <strong>{summary.maxAqi ?? '--'}</strong></span>
+          <span>
+            Minimum AQI: <strong>{summary.minAqi ?? '--'}</strong>
+          </span>
+          <span>
+            Average AQI: <strong>{summary.avgAqi ?? '--'}</strong>
+          </span>
+          <span>
+            Peak AQI: <strong>{summary.maxAqi ?? '--'}</strong>
+          </span>
         </div>
       </div>
 
@@ -163,15 +175,28 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
           </ResponsiveContainer>
         </div>
       ) : (
-        <div id="accessible-trends-table" className="overflow-x-auto max-h-72 border border-slate-200 rounded-xl">
+        <div
+          id="accessible-trends-table"
+          className="overflow-x-auto max-h-72 border border-slate-200 rounded-xl"
+        >
           <table className="min-w-full divide-y divide-slate-200 text-xs text-left">
             <thead className="bg-slate-50 sticky top-0">
               <tr>
-                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">Timestamp</th>
-                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">Type</th>
-                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">CPCB AQI</th>
-                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">PM2.5 (µg/m³)</th>
-                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">PM10 (µg/m³)</th>
+                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">
+                  Timestamp
+                </th>
+                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">
+                  Type
+                </th>
+                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">
+                  CPCB AQI
+                </th>
+                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">
+                  PM2.5 (µg/m³)
+                </th>
+                <th scope="col" className="px-4 py-2.5 font-bold text-slate-700">
+                  PM10 (µg/m³)
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">

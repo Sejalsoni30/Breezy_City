@@ -102,13 +102,20 @@ export const AqiHero: React.FC<AqiHeroProps> = ({
 
   const formatPollutantName = (name: string) => {
     switch (name) {
-      case 'pm2_5': return 'PM2.5';
-      case 'pm10': return 'PM10';
-      case 'nitrogen_dioxide': return 'NO₂';
-      case 'ozone': return 'O₃';
-      case 'carbon_monoxide': return 'CO';
-      case 'sulphur_dioxide': return 'SO₂';
-      default: return name;
+      case 'pm2_5':
+        return 'PM2.5';
+      case 'pm10':
+        return 'PM10';
+      case 'nitrogen_dioxide':
+        return 'NO₂';
+      case 'ozone':
+        return 'O₃';
+      case 'carbon_monoxide':
+        return 'CO';
+      case 'sulphur_dioxide':
+        return 'SO₂';
+      default:
+        return name;
     }
   };
 
@@ -159,7 +166,9 @@ export const AqiHero: React.FC<AqiHeroProps> = ({
               <button
                 type="button"
                 onClick={onToggleFavorite}
-                aria-label={isFavorite ? 'Remove from favorite locations' : 'Add to favorite locations'}
+                aria-label={
+                  isFavorite ? 'Remove from favorite locations' : 'Add to favorite locations'
+                }
                 className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors"
               >
                 <Star
@@ -181,7 +190,9 @@ export const AqiHero: React.FC<AqiHeroProps> = ({
                 <Share2 className="w-5 h-5 text-slate-400" aria-hidden="true" />
               )}
             </button>
-            {isCopied && <span className="text-xs text-emerald-700 font-semibold">Link copied!</span>}
+            {isCopied && (
+              <span className="text-xs text-emerald-700 font-semibold">Link copied!</span>
+            )}
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -220,9 +231,7 @@ export const AqiHero: React.FC<AqiHeroProps> = ({
           <div className={`text-6xl sm:text-7xl font-extrabold tracking-tighter ${theme.numColor}`}>
             {aqi !== null ? aqi : '--'}
           </div>
-          <span className="text-xs font-semibold text-slate-600 mt-2">
-            Scale: 0 to 500
-          </span>
+          <span className="text-xs font-semibold text-slate-600 mt-2">Scale: 0 to 500</span>
         </div>
       </div>
     </article>

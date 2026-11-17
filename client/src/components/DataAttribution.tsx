@@ -26,8 +26,11 @@ export const DataAttribution: React.FC<DataAttributionProps> = ({
     if (!isoString) return 'N/A';
     try {
       const d = new Date(isoString);
-      return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + 
-        ' ' + d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+      return (
+        d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) +
+        ' ' +
+        d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })
+      );
     } catch {
       return isoString;
     }
@@ -39,7 +42,9 @@ export const DataAttribution: React.FC<DataAttributionProps> = ({
         <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" aria-hidden="true" />
         <div className="space-y-1">
           <p className="font-semibold text-slate-800">
-            {isModelEstimate ? 'Atmospheric Model Grid Estimate (Not a Ground Station Sensor)' : source}
+            {isModelEstimate
+              ? 'Atmospheric Model Grid Estimate (Not a Ground Station Sensor)'
+              : source}
           </p>
           <p className="text-slate-500 leading-relaxed">
             {dataNatureDisclosure} Data provided under CC BY 4.0 by{' '}
@@ -51,11 +56,16 @@ export const DataAttribution: React.FC<DataAttributionProps> = ({
             >
               <span>Open-Meteo</span>
               <ExternalLink className="w-3 h-3 ml-0.5" aria-hidden="true" />
-            </a>.
+            </a>
+            .
           </p>
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-slate-500 pt-0.5">
-            <span>Model Time: <strong>{formatTime(modelTime)}</strong></span>
-            <span>Retrieved: <strong>{formatTime(fetchTime)}</strong></span>
+            <span>
+              Model Time: <strong>{formatTime(modelTime)}</strong>
+            </span>
+            <span>
+              Retrieved: <strong>{formatTime(fetchTime)}</strong>
+            </span>
           </div>
         </div>
       </div>

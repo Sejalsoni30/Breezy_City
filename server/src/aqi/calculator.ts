@@ -1,9 +1,4 @@
-import {
-  CPCB_BREAKPOINTS,
-  CPCB_CATEGORIES,
-  AqiCategory,
-  CategoryInfo
-} from './cpcbBreakpoints.js';
+import { CPCB_BREAKPOINTS, CPCB_CATEGORIES, AqiCategory, CategoryInfo } from './cpcbBreakpoints.js';
 import { convertCoUgToMg } from './conversions.js';
 
 export interface PollutantReading {
@@ -35,7 +30,12 @@ export function calculateSubIndex(
   pollutant: string,
   concentration: number
 ): { subIndex: number; category: AqiCategory } | null {
-  if (concentration === null || concentration === undefined || isNaN(concentration) || concentration < 0) {
+  if (
+    concentration === null ||
+    concentration === undefined ||
+    isNaN(concentration) ||
+    concentration < 0
+  ) {
     return null;
   }
 
@@ -74,9 +74,7 @@ export function calculateSubIndex(
       // Use standard range.bLo and range.bHi for the slope
       const deltaI = range.iHi - range.iLo;
       const deltaB = range.bHi - range.bLo;
-      const subIndex = Math.round(
-        (deltaI / deltaB) * (concentration - range.bLo) + range.iLo
-      );
+      const subIndex = Math.round((deltaI / deltaB) * (concentration - range.bLo) + range.iLo);
 
       // Clamp between range.iLo and range.iHi
       const clampedSubIndex = Math.max(range.iLo, Math.min(range.iHi, subIndex));
@@ -104,7 +102,7 @@ export function getCategoryFromAqi(aqi: number): AqiCategory {
 
 /**
  * Calculates India CPCB NAQI given current pollutant readings.
- * 
+ *
  * Rules enforced from CPCB Oct 2014 report:
  * 1. Minimum 3 valid pollutants required.
  * 2. At least one of the valid pollutants MUST be PM10 or PM2.5.

@@ -55,7 +55,8 @@ export function getHealthGuidance(category: AqiCategory | null): HealthGuidance 
 
     case 'Satisfactory':
       return {
-        general: 'Air quality is acceptable; minor breathing discomfort may occur in unusually sensitive people.',
+        general:
+          'Air quality is acceptable; minor breathing discomfort may occur in unusually sensitive people.',
         sensitiveGroups: {
           children: 'Safe for outdoor recreation; monitor for coughing if prone to allergies.',
           elderly: 'Generally safe; take breaks if feeling unusual fatigue.',
@@ -71,10 +72,12 @@ export function getHealthGuidance(category: AqiCategory | null): HealthGuidance 
 
     case 'Moderate':
       return {
-        general: 'May cause breathing discomfort to people with lung disease, asthma, and heart conditions.',
+        general:
+          'May cause breathing discomfort to people with lung disease, asthma, and heart conditions.',
         sensitiveGroups: {
           children: 'Reduce prolonged or intense outdoor sports and running.',
-          elderly: 'Limit heavy physical outdoor exertion; prefer brisk walks during lower-traffic hours.',
+          elderly:
+            'Limit heavy physical outdoor exertion; prefer brisk walks during lower-traffic hours.',
           respiratory: 'Individuals with asthma should strictly keep prescribed medication handy.',
           heart: 'Avoid strenuous outdoor workouts that elevate heart rate significantly.'
         },
@@ -92,7 +95,8 @@ export function getHealthGuidance(category: AqiCategory | null): HealthGuidance 
         sensitiveGroups: {
           children: 'Avoid prolonged outdoor play and sports; move activities indoors.',
           elderly: 'Stay indoors as much as possible; avoid morning/evening outdoor walks.',
-          respiratory: 'High risk of asthma attacks or shortness of breath. Stay in air-filtered spaces.',
+          respiratory:
+            'High risk of asthma attacks or shortness of breath. Stay in air-filtered spaces.',
           heart: 'Avoid all heavy outdoor labor and strenuous aerobic exercise.'
         },
         exposureReductionTips: [
@@ -106,11 +110,15 @@ export function getHealthGuidance(category: AqiCategory | null): HealthGuidance 
 
     case 'Very Poor':
       return {
-        general: 'May cause respiratory illness on prolonged exposure. Significant hazard to all residents.',
+        general:
+          'May cause respiratory illness on prolonged exposure. Significant hazard to all residents.',
         sensitiveGroups: {
-          children: 'Children must strictly remain indoors and refrain from strenuous physical play.',
-          elderly: 'Stay indoors with closed doors and windows; monitor vital signs if chronically ill.',
-          respiratory: 'Severe risk of acute respiratory exacerbation. Keep emergency medications accessible.',
+          children:
+            'Children must strictly remain indoors and refrain from strenuous physical play.',
+          elderly:
+            'Stay indoors with closed doors and windows; monitor vital signs if chronically ill.',
+          respiratory:
+            'Severe risk of acute respiratory exacerbation. Keep emergency medications accessible.',
           heart: 'Elevated risk of cardiovascular strain. Rest and avoid physical exertion.'
         },
         exposureReductionTips: [
@@ -124,12 +132,17 @@ export function getHealthGuidance(category: AqiCategory | null): HealthGuidance 
 
     case 'Severe':
       return {
-        general: 'Emergency conditions: seriously impacts healthy individuals and endangers those with existing medical conditions.',
+        general:
+          'Emergency conditions: seriously impacts healthy individuals and endangers those with existing medical conditions.',
         sensitiveGroups: {
-          children: 'Strictly avoid all outdoor exposure. Schools are advised to suspend outdoor sessions.',
-          elderly: 'Remain indoors in a sealed room with active air filtration; seek medical care if symptoms worsen.',
-          respiratory: 'Extreme health danger. Use prescribed nebulizers or inhalers as directed by physician.',
-          heart: 'Avoid any physical stress; emergency consultation recommended if chest pain or distress occurs.'
+          children:
+            'Strictly avoid all outdoor exposure. Schools are advised to suspend outdoor sessions.',
+          elderly:
+            'Remain indoors in a sealed room with active air filtration; seek medical care if symptoms worsen.',
+          respiratory:
+            'Extreme health danger. Use prescribed nebulizers or inhalers as directed by physician.',
+          heart:
+            'Avoid any physical stress; emergency consultation recommended if chest pain or distress occurs.'
         },
         exposureReductionTips: [
           'Stay completely indoors with windows and doors securely closed.',

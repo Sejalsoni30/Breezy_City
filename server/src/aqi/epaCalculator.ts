@@ -1,10 +1,20 @@
-import { EPA_BREAKPOINTS, EPA_CATEGORIES, EpaAqiCategory, EpaCategoryInfo } from './epaBreakpoints.js';
+import {
+  EPA_BREAKPOINTS,
+  EPA_CATEGORIES,
+  EpaAqiCategory,
+  EpaCategoryInfo
+} from './epaBreakpoints.js';
 
 export function calculateEpaSubIndex(
   pollutant: string,
   concentration: number
 ): { subIndex: number; category: EpaAqiCategory } | null {
-  if (concentration === null || concentration === undefined || isNaN(concentration) || concentration < 0) {
+  if (
+    concentration === null ||
+    concentration === undefined ||
+    isNaN(concentration) ||
+    concentration < 0
+  ) {
     return null;
   }
 

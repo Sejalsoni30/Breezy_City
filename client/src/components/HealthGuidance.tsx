@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { HeartPulse, Baby, UserCheck, Stethoscope, ShieldCheck, CheckSquare, AlertOctagon } from 'lucide-react';
+import {
+  HeartPulse,
+  Baby,
+  UserCheck,
+  Stethoscope,
+  ShieldCheck,
+  CheckSquare,
+  AlertOctagon
+} from 'lucide-react';
 
 interface HealthGuidanceProps {
   guidance: {
@@ -17,7 +25,9 @@ interface HealthGuidanceProps {
 }
 
 export const HealthGuidance: React.FC<HealthGuidanceProps> = ({ guidance, category }) => {
-  const [activeTab, setActiveTab] = useState<'general' | 'children' | 'elderly' | 'respiratory' | 'heart'>('general');
+  const [activeTab, setActiveTab] = useState<
+    'general' | 'children' | 'elderly' | 'respiratory' | 'heart'
+  >('general');
 
   const tabs = [
     { id: 'general', label: 'General Public', icon: HeartPulse },
@@ -44,21 +54,32 @@ export const HealthGuidance: React.FC<HealthGuidanceProps> = ({ guidance, catego
   };
 
   return (
-    <section aria-labelledby="health-advisory-heading" className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+    <section
+      aria-labelledby="health-advisory-heading"
+      className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6"
+    >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
         <div>
-          <h2 id="health-advisory-heading" className="text-xl font-bold text-slate-900 flex items-center space-x-2">
+          <h2
+            id="health-advisory-heading"
+            className="text-xl font-bold text-slate-900 flex items-center space-x-2"
+          >
             <HeartPulse className="w-5 h-5 text-rose-600" aria-hidden="true" />
             <span>Health Advisory & Exposure Reduction</span>
           </h2>
           <p className="text-xs text-slate-500">
-            Official India CPCB health impact recommendations for <strong>{category || 'Current'}</strong> air conditions
+            Official India CPCB health impact recommendations for{' '}
+            <strong>{category || 'Current'}</strong> air conditions
           </p>
         </div>
       </div>
 
       {/* Group Navigation Tabs */}
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Health guidance for sensitive groups">
+      <div
+        className="flex flex-wrap gap-2"
+        role="tablist"
+        aria-label="Health guidance for sensitive groups"
+      >
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -108,7 +129,10 @@ export const HealthGuidance: React.FC<HealthGuidanceProps> = ({ guidance, catego
               key={idx}
               className="flex items-start space-x-2 bg-slate-50 border border-slate-200/80 rounded-lg p-3"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 shrink-0" aria-hidden="true" />
+              <span
+                className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-1.5 shrink-0"
+                aria-hidden="true"
+              />
               <span className="leading-normal">{tip}</span>
             </li>
           ))}

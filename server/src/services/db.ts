@@ -28,7 +28,10 @@ class MemoryDatabase {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
-  public saveBookmark(userId: string, loc: { name: string; latitude: number; longitude: number; displayName: string }): Bookmark {
+  public saveBookmark(
+    userId: string,
+    loc: { name: string; latitude: number; longitude: number; displayName: string }
+  ): Bookmark {
     const id = crypto.randomUUID();
     const bookmark: Bookmark = {
       id,

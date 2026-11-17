@@ -1,6 +1,6 @@
 /**
  * US EPA Air Quality Index (AQI) Breakpoints
- * 
+ *
  * Source: US EPA "Technical Assistance Document for the Reporting of Daily Air Quality - the Air Quality Index (AQI)"
  * Publication: EPA-454/B-24-001 (incorporating May 2024 PM2.5 annual/daily revisions).
  * Reference: https://www.airnow.gov/aqi/aqi-basics/
@@ -50,9 +50,11 @@ export const EPA_CATEGORIES: Record<EpaAqiCategory, EpaCategoryInfo> = {
     color: '#eab308',
     badgeBg: 'bg-yellow-100',
     badgeText: 'text-yellow-800',
-    description: 'Air quality is acceptable. However, there may be a risk for some people, particularly those who are unusually sensitive to air pollution.',
+    description:
+      'Air quality is acceptable. However, there may be a risk for some people, particularly those who are unusually sensitive to air pollution.',
     healthStatement: 'Unusually sensitive individuals may experience respiratory symptoms.',
-    sensitiveGroupAdvice: 'Unusually sensitive people should consider reducing prolonged or heavy outdoor exertion.'
+    sensitiveGroupAdvice:
+      'Unusually sensitive people should consider reducing prolonged or heavy outdoor exertion.'
   },
   'Unhealthy for Sensitive Groups': {
     name: 'Unhealthy for Sensitive Groups',
@@ -60,9 +62,12 @@ export const EPA_CATEGORIES: Record<EpaAqiCategory, EpaCategoryInfo> = {
     color: '#ea580c',
     badgeBg: 'bg-orange-100',
     badgeText: 'text-orange-800',
-    description: 'Members of sensitive groups may experience health effects. The general public is less likely to be affected.',
-    healthStatement: 'Increasing likelihood of respiratory symptoms in sensitive individuals, aggravation of heart or lung disease.',
-    sensitiveGroupAdvice: 'People with heart or lung disease, older adults, children and teens should reduce prolonged or heavy outdoor exertion.'
+    description:
+      'Members of sensitive groups may experience health effects. The general public is less likely to be affected.',
+    healthStatement:
+      'Increasing likelihood of respiratory symptoms in sensitive individuals, aggravation of heart or lung disease.',
+    sensitiveGroupAdvice:
+      'People with heart or lung disease, older adults, children and teens should reduce prolonged or heavy outdoor exertion.'
   },
   Unhealthy: {
     name: 'Unhealthy',
@@ -70,9 +75,12 @@ export const EPA_CATEGORIES: Record<EpaAqiCategory, EpaCategoryInfo> = {
     color: '#dc2626',
     badgeBg: 'bg-red-100',
     badgeText: 'text-red-800',
-    description: 'Some members of the general public may experience health effects; members of sensitive groups may experience more serious health effects.',
-    healthStatement: 'Increased aggravation of heart or lung disease and premature mortality among persons with cardiopulmonary disease.',
-    sensitiveGroupAdvice: 'People with heart or lung disease, older adults, children and teens should avoid prolonged or heavy outdoor exertion. Everyone else should reduce prolonged or heavy exertion.'
+    description:
+      'Some members of the general public may experience health effects; members of sensitive groups may experience more serious health effects.',
+    healthStatement:
+      'Increased aggravation of heart or lung disease and premature mortality among persons with cardiopulmonary disease.',
+    sensitiveGroupAdvice:
+      'People with heart or lung disease, older adults, children and teens should avoid prolonged or heavy outdoor exertion. Everyone else should reduce prolonged or heavy exertion.'
   },
   'Very Unhealthy': {
     name: 'Very Unhealthy',
@@ -81,8 +89,10 @@ export const EPA_CATEGORIES: Record<EpaAqiCategory, EpaCategoryInfo> = {
     badgeBg: 'bg-purple-100',
     badgeText: 'text-purple-800',
     description: 'Health alert: The risk of health effects is increased for everyone.',
-    healthStatement: 'Significant aggravation of heart or lung disease and premature mortality. Substantial increase in respiratory effects in general population.',
-    sensitiveGroupAdvice: 'People with heart or lung disease, older adults, children and teens should avoid all outdoor physical activity. Everyone else should avoid prolonged or heavy exertion.'
+    healthStatement:
+      'Significant aggravation of heart or lung disease and premature mortality. Substantial increase in respiratory effects in general population.',
+    sensitiveGroupAdvice:
+      'People with heart or lung disease, older adults, children and teens should avoid all outdoor physical activity. Everyone else should avoid prolonged or heavy exertion.'
   },
   Hazardous: {
     name: 'Hazardous',
@@ -91,8 +101,10 @@ export const EPA_CATEGORIES: Record<EpaAqiCategory, EpaCategoryInfo> = {
     badgeBg: 'bg-rose-950',
     badgeText: 'text-rose-100',
     description: 'Health warning of emergency conditions: everyone is more likely to be affected.',
-    healthStatement: 'Serious aggravation of heart or lung disease. Premature mortality in persons with cardiopulmonary disease and the elderly; serious risk of respiratory effects in general population.',
-    sensitiveGroupAdvice: 'Everyone should avoid all physical activity outdoors. Sensitive groups should remain indoors and keep activity levels low.'
+    healthStatement:
+      'Serious aggravation of heart or lung disease. Premature mortality in persons with cardiopulmonary disease and the elderly; serious risk of respiratory effects in general population.',
+    sensitiveGroupAdvice:
+      'Everyone should avoid all physical activity outdoors. Sensitive groups should remain indoors and keep activity levels low.'
   }
 };
 

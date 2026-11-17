@@ -13,16 +13,39 @@ export const WeatherContext: React.FC<WeatherContextProps> = ({ weather }) => {
 
   const getWindDirectionLabel = (deg: number | null) => {
     if (deg === null || deg === undefined) return 'N/A';
-    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    const directions = [
+      'N',
+      'NNE',
+      'NE',
+      'ENE',
+      'E',
+      'ESE',
+      'SE',
+      'SSE',
+      'S',
+      'SSW',
+      'SW',
+      'WSW',
+      'W',
+      'WNW',
+      'NW',
+      'NNW'
+    ];
     const idx = Math.round(deg / 22.5) % 16;
     return `${directions[idx]} (${deg}°)`;
   };
 
   return (
-    <section aria-labelledby="weather-heading" className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+    <section
+      aria-labelledby="weather-heading"
+      className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4"
+    >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
         <div>
-          <h2 id="weather-heading" className="text-xl font-bold text-slate-900 flex items-center space-x-2">
+          <h2
+            id="weather-heading"
+            className="text-xl font-bold text-slate-900 flex items-center space-x-2"
+          >
             <CloudSun className="w-5 h-5 text-sky-600" aria-hidden="true" />
             <span>Meteorological Context</span>
           </h2>
@@ -40,7 +63,9 @@ export const WeatherContext: React.FC<WeatherContextProps> = ({ weather }) => {
             <span>Temperature</span>
           </div>
           <div className="text-2xl font-bold text-slate-900">
-            {weather.temperature !== null ? `${weather.temperature}${weather.temperatureUnit}` : '--'}
+            {weather.temperature !== null
+              ? `${weather.temperature}${weather.temperatureUnit}`
+              : '--'}
           </div>
           <p className="text-[11px] text-slate-500 mt-1 capitalize">{weather.weatherDescription}</p>
         </div>
@@ -84,7 +109,10 @@ export const WeatherContext: React.FC<WeatherContextProps> = ({ weather }) => {
 
       <div className="pt-2 flex items-center space-x-1.5 text-[11px] text-slate-500 italic">
         <AlertCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" aria-hidden="true" />
-        <span>Weather data is displayed strictly for ambient environmental context. Weather and AQI correlation does not imply direct causality.</span>
+        <span>
+          Weather data is displayed strictly for ambient environmental context. Weather and AQI
+          correlation does not imply direct causality.
+        </span>
       </div>
     </section>
   );

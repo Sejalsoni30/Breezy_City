@@ -2,45 +2,59 @@ import { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
+import { SERVER_CONFIG } from '../config/constants.js';
 
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS) || 60000;
-const RATE_LIMIT_MAX = Number(process.env.RATE_LIMIT_MAX) || 100;
+const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || SERVER_CONFIG.DEFAULT_CLIENT_ORIGIN;
 
+/**
+ * Helmet Content Security Policy and Secure Headers
+ */
 export const securityHeaders = helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://unpkg.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://unpkg.com"],
+      scriptSrc: ["'self'", 'https://unpkg.com'],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://unpkg.com'],
       imgSrc: [
         "'self'",
-        "data:",
-        "https:",
-        "https://*.arcgisonline.com",
-        "https://server.arcgisonline.com",
-        "https://*.basemaps.cartocdn.com",
-        "https://*.tile.openstreetmap.org",
-        "https://unpkg.com"
+        'data:',
+        'https:',
+        'https://*.arcgisonline.com',
+        'https://server.arcgisonline.com',
+        'https://*.basemaps.cartocdn.com',
+        'https://*.tile.openstreetmap.org',
+        'https://unpkg.com'
       ],
       connectSrc: [
         "'self'",
         CLIENT_ORIGIN,
-        "https://*.open-meteo.com",
-        "https://*.arcgisonline.com",
-        "https://server.arcgisonline.com",
-        "https://*.basemaps.cartocdn.com",
-        "https://*.tile.openstreetmap.org",
-        "https://unpkg.com"
+        'https://*.open-meteo.com',
+        'https://*.arcgisonline.com',
+        'https://server.arcgisonline.com',
+        'https://*.basemaps.cartocdn.com',
+        'https://*.tile.openstreetmap.org',
+        'https://unpkg.com'
       ],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: []
     }
   },
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
 });
 
+/**
+ * Restrict browser hardware permissions via Permissions-Policy header
+ */
+export function permissionsPolicy(req: Request, res: Response, next: NextFunction): void {
+  res.setHeader('Permissions-Policy', 'geolocation=(self), camera=(), microphone=(), payment=()');
+  next();
+}
+
+/**
+ * CORS Middleware with strict origin allowlist
+ */
 export const corsMiddleware = cors({
   origin: (origin, callback) => {
     // Allow non-browser requests or same-origin requests without an Origin header
@@ -67,9 +81,12 @@ export const corsMiddleware = cors({
   maxAge: 86400
 });
 
+/**
+ * API Route Rate Limiting (DDoS & Brute Force Prevention)
+ */
 export const apiRateLimiter = rateLimit({
-  windowMs: RATE_LIMIT_WINDOW_MS,
-  max: RATE_LIMIT_MAX,
+  windowMs: SERVER_CONFIG.RATE_LIMIT.WINDOW_MS,
+  max: SERVER_CONFIG.RATE_LIMIT.MAX_REQUESTS,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
