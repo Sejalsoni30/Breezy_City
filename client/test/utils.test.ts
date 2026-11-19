@@ -1,10 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { escapeHtml } from '../src/utils/sanitize';
-import {
-  generateNeighborhoodStations,
-  getCategoryAndColor,
-  ZONES
-} from '../src/utils/mapNodes';
+import { generateNeighborhoodStations, getCategoryAndColor, ZONES } from '../src/utils/mapNodes';
 
 describe('Sanitization Utilities', () => {
   it('escapes dangerous HTML characters to prevent XSS injection', () => {

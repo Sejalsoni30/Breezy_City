@@ -114,7 +114,14 @@ describe('US EPA Air Quality Index (2024 Standards)', () => {
 
   describe('EPA_CATEGORIES metadata completeness', () => {
     it('contains all 6 required EPA category definitions with styling', () => {
-      const categories = ['Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous'] as const;
+      const categories = [
+        'Good',
+        'Moderate',
+        'Unhealthy for Sensitive Groups',
+        'Unhealthy',
+        'Very Unhealthy',
+        'Hazardous'
+      ] as const;
       categories.forEach((cat) => {
         const info = EPA_CATEGORIES[cat];
         expect(info).toBeDefined();

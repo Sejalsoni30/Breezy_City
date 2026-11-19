@@ -262,7 +262,7 @@ export const App: React.FC = () => {
 
       <main
         id="main-content"
-        className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
+        className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-5 sm:space-y-6"
       >
         {/* Search & Location Bar */}
         <section aria-label="Location search and selection" className="space-y-2">
@@ -270,7 +270,7 @@ export const App: React.FC = () => {
 
           {/* Favorites Pills Bar */}
           {favorites.length > 0 && (
-            <div className="flex items-center space-x-2 overflow-x-auto py-1 text-xs">
+            <div className="flex items-center space-x-2 overflow-x-auto no-scrollbar py-1 text-xs touch-pan-x -mx-1 px-1">
               <span className="text-slate-500 font-semibold flex items-center space-x-1 shrink-0">
                 <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
                 <span>Saved Cities:</span>
@@ -281,7 +281,7 @@ export const App: React.FC = () => {
                     key={i}
                     type="button"
                     onClick={() => setSelectedLocation(fav)}
-                    className={`px-3 py-1 rounded-full text-xs font-medium border transition-colors shrink-0 ${
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors shrink-0 min-h-[32px] flex items-center ${
                       Math.abs(fav.latitude - selectedLocation.latitude) < 0.001 &&
                       Math.abs(fav.longitude - selectedLocation.longitude) < 0.001
                         ? 'bg-blue-600 text-white border-blue-600'

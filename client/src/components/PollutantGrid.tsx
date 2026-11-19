@@ -81,10 +81,10 @@ export const PollutantGrid: React.FC<PollutantGridProps> = ({ pollutants }) => {
   };
 
   return (
-    <section aria-labelledby="pollutants-heading" className="space-y-4">
+    <section aria-labelledby="pollutants-heading" className="space-y-3 sm:space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 id="pollutants-heading" className="text-xl font-bold text-slate-900">
+          <h2 id="pollutants-heading" className="text-lg sm:text-xl font-bold text-slate-900">
             Individual Pollutant Sub-Indices
           </h2>
           <p className="text-xs text-slate-500">
@@ -93,7 +93,7 @@ export const PollutantGrid: React.FC<PollutantGridProps> = ({ pollutants }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {POLLUTANT_METAS.map((meta) => {
           const detail = pollutants[meta.key];
           const isAvailable = detail && detail.isAvailable && detail.subIndex !== null;
@@ -101,7 +101,7 @@ export const PollutantGrid: React.FC<PollutantGridProps> = ({ pollutants }) => {
           return (
             <div
               key={meta.key}
-              className="bg-white rounded-xl p-5 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors"
+              className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 shadow-sm flex flex-col justify-between hover:border-slate-300 transition-colors"
             >
               <div>
                 <div className="flex items-start justify-between">

@@ -145,59 +145,61 @@ export const AqiHero: React.FC<AqiHeroProps> = ({
 
   return (
     <article
-      className={`bg-white rounded-2xl p-6 sm:p-8 shadow-sm border ${theme.cardBorder} transition-all duration-200`}
+      className={`bg-white rounded-2xl p-4 sm:p-6 lg:p-8 shadow-sm border ${theme.cardBorder} transition-all duration-200`}
       aria-label={`Air Quality Index for ${locationName}`}
     >
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
         {/* Left: Location & Primary Indicator */}
-        <div className="space-y-3">
-          <div className="flex items-center space-x-2 text-xs font-semibold tracking-wider uppercase text-slate-500">
+        <div className="space-y-3 min-w-0">
+          <div className="flex items-center space-x-2 text-xs font-semibold tracking-wider uppercase text-slate-500 flex-wrap">
             <span>{standardName}</span>
             <span>•</span>
             <span className="text-blue-600 font-bold">Mathematical Model Index</span>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-wrap gap-y-1">
+            <h2 className="text-xl xs:text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight break-words">
               {locationName}
             </h2>
 
-            {onToggleFavorite && (
+            <div className="flex items-center space-x-1 shrink-0">
+              {onToggleFavorite && (
+                <button
+                  type="button"
+                  onClick={onToggleFavorite}
+                  aria-label={
+                    isFavorite ? 'Remove from favorite locations' : 'Add to favorite locations'
+                  }
+                  className="w-10 h-10 min-w-[40px] min-h-[40px] sm:w-9 sm:h-9 sm:min-w-[36px] sm:min-h-[36px] rounded-xl text-slate-400 hover:text-amber-500 hover:bg-slate-100 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors flex items-center justify-center"
+                >
+                  <Star
+                    className={`w-5 h-5 ${isFavorite ? 'fill-amber-400 text-amber-500' : 'text-slate-400'}`}
+                    aria-hidden="true"
+                  />
+                </button>
+              )}
+
               <button
                 type="button"
-                onClick={onToggleFavorite}
-                aria-label={
-                  isFavorite ? 'Remove from favorite locations' : 'Add to favorite locations'
-                }
-                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-colors"
+                onClick={handleShare}
+                aria-label="Share location link"
+                className="w-10 h-10 min-w-[40px] min-h-[40px] sm:w-9 sm:h-9 sm:min-w-[36px] sm:min-h-[36px] rounded-xl text-slate-400 hover:text-blue-600 hover:bg-slate-100 active:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors flex items-center justify-center"
               >
-                <Star
-                  className={`w-5 h-5 ${isFavorite ? 'fill-amber-400 text-amber-500' : 'text-slate-400'}`}
-                  aria-hidden="true"
-                />
+                {isCopied ? (
+                  <Check className="w-5 h-5 text-emerald-600" aria-hidden="true" />
+                ) : (
+                  <Share2 className="w-5 h-5 text-slate-400" aria-hidden="true" />
+                )}
               </button>
-            )}
-
-            <button
-              type="button"
-              onClick={handleShare}
-              aria-label="Share location link"
-              className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors inline-flex items-center space-x-1"
-            >
-              {isCopied ? (
-                <Check className="w-5 h-5 text-emerald-600" aria-hidden="true" />
-              ) : (
-                <Share2 className="w-5 h-5 text-slate-400" aria-hidden="true" />
+              {isCopied && (
+                <span className="text-xs text-emerald-700 font-semibold ml-1">Link copied!</span>
               )}
-            </button>
-            {isCopied && (
-              <span className="text-xs text-emerald-700 font-semibold">Link copied!</span>
-            )}
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             <div
-              className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-sm font-bold border ${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder}`}
+              className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs xs:text-sm font-bold border ${theme.badgeBg} ${theme.badgeText} ${theme.badgeBorder}`}
               role="status"
             >
               {theme.icon}
@@ -209,12 +211,12 @@ export const AqiHero: React.FC<AqiHeroProps> = ({
             </span>
           </div>
 
-          <p className="text-sm text-slate-700 leading-relaxed max-w-xl">
+          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed max-w-xl">
             {categoryInfo?.description || 'Air quality data is currently being monitored.'}
           </p>
 
           {dominantPollutants && dominantPollutants.length > 0 && (
-            <div className="text-xs text-slate-600 bg-slate-50 border border-slate-200 inline-block px-3 py-1.5 rounded-lg">
+            <div className="text-xs text-slate-600 bg-slate-50 border border-slate-200 inline-block px-3 py-1.5 rounded-lg break-words">
               Primary Dominant Pollutant:{' '}
               <strong className="text-slate-900 font-semibold">
                 {dominantPollutants.map(formatPollutantName).join(', ')}
@@ -224,11 +226,13 @@ export const AqiHero: React.FC<AqiHeroProps> = ({
         </div>
 
         {/* Right: Prominent AQI Dial / Number Display */}
-        <div className="flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border border-slate-200 min-w-[200px] text-center shrink-0">
+        <div className="flex flex-col items-center justify-center p-4 sm:p-6 bg-slate-50 rounded-2xl border border-slate-200 w-full sm:w-auto sm:min-w-[200px] text-center shrink-0">
           <span className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">
             {data.standard === 'US_EPA' ? 'US EPA AQI' : 'CPCB NAQI'}
           </span>
-          <div className={`text-6xl sm:text-7xl font-extrabold tracking-tighter ${theme.numColor}`}>
+          <div
+            className={`text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tighter ${theme.numColor}`}
+          >
             {aqi !== null ? aqi : '--'}
           </div>
           <span className="text-xs font-semibold text-slate-600 mt-2">Scale: 0 to 500</span>

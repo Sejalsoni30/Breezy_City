@@ -56,15 +56,15 @@ export const HealthGuidance: React.FC<HealthGuidanceProps> = ({ guidance, catego
   return (
     <section
       aria-labelledby="health-advisory-heading"
-      className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6"
+      className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200 shadow-sm space-y-4 sm:space-y-6"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
         <div>
           <h2
             id="health-advisory-heading"
-            className="text-xl font-bold text-slate-900 flex items-center space-x-2"
+            className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2"
           >
-            <HeartPulse className="w-5 h-5 text-rose-600" aria-hidden="true" />
+            <HeartPulse className="w-5 h-5 text-rose-600 shrink-0" aria-hidden="true" />
             <span>Health Advisory & Exposure Reduction</span>
           </h2>
           <p className="text-xs text-slate-500">
@@ -76,7 +76,7 @@ export const HealthGuidance: React.FC<HealthGuidanceProps> = ({ guidance, catego
 
       {/* Group Navigation Tabs */}
       <div
-        className="flex flex-wrap gap-2"
+        className="flex items-center overflow-x-auto no-scrollbar sm:flex-wrap gap-2 pb-1 touch-pan-x -mx-1 px-1"
         role="tablist"
         aria-label="Health guidance for sensitive groups"
       >
@@ -91,13 +91,13 @@ export const HealthGuidance: React.FC<HealthGuidanceProps> = ({ guidance, catego
               aria-controls={`tabpanel-${tab.id}`}
               id={`tab-${tab.id}`}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`flex items-center space-x-1.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all shrink-0 min-h-[40px] focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 isActive
                   ? 'bg-blue-600 text-white shadow-sm'
                   : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
               }`}
             >
-              <Icon className="w-4 h-4" aria-hidden="true" />
+              <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />
               <span>{tab.label}</span>
             </button>
           );
@@ -109,21 +109,21 @@ export const HealthGuidance: React.FC<HealthGuidanceProps> = ({ guidance, catego
         id={`tabpanel-${activeTab}`}
         role="tabpanel"
         aria-labelledby={`tab-${activeTab}`}
-        className="bg-blue-50/60 rounded-xl p-5 border border-blue-100 text-slate-800"
+        className="bg-blue-50/60 rounded-xl p-4 sm:p-5 border border-blue-100 text-slate-800"
       >
         <h3 className="text-sm font-bold text-blue-900 mb-1">
           {tabs.find((t) => t.id === activeTab)?.label} Advisory
         </h3>
-        <p className="text-sm leading-relaxed text-slate-700">{getAdviceForTab()}</p>
+        <p className="text-xs sm:text-sm leading-relaxed text-slate-700">{getAdviceForTab()}</p>
       </div>
 
       {/* Practical Exposure Reduction Checklist */}
       <div className="space-y-3">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-1.5">
-          <CheckSquare className="w-4 h-4 text-emerald-600" aria-hidden="true" />
+        <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-1.5">
+          <CheckSquare className="w-4 h-4 text-emerald-600 shrink-0" aria-hidden="true" />
           <span>Recommended Practical Actions</span>
         </h3>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs text-slate-700">
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-2.5 text-xs text-slate-700">
           {guidance.exposureReductionTips.map((tip, idx) => (
             <li
               key={idx}

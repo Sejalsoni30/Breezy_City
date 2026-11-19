@@ -76,21 +76,21 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
   return (
     <section
       aria-labelledby="ai-advisory-title"
-      className="bg-gradient-to-br from-indigo-50/60 via-white to-sky-50/60 rounded-2xl border border-indigo-100 shadow-sm p-5 sm:p-6 space-y-5"
+      className="bg-gradient-to-br from-indigo-50/60 via-white to-sky-50/60 rounded-2xl border border-indigo-100 shadow-sm p-4 sm:p-6 space-y-4 sm:space-y-5"
     >
       {/* Title & Engine Source Pill */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-indigo-100/80">
         <div className="flex items-center space-x-2.5">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-sm shrink-0">
             <Bot className="w-5 h-5" aria-hidden="true" />
           </div>
           <div>
             <h2
               id="ai-advisory-title"
-              className="text-lg font-bold text-slate-900 flex items-center gap-2"
+              className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2"
             >
               <span>Personalized AI Health Advisory</span>
-              <Sparkles className="w-4 h-4 text-indigo-500" aria-hidden="true" />
+              <Sparkles className="w-4 h-4 text-indigo-500 shrink-0" aria-hidden="true" />
             </h2>
             <p className="text-xs text-slate-600">
               Personalized precautions tuned to your health profile and live ambient air quality
@@ -120,7 +120,7 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
         <div
           role="group"
           aria-label="Health profile selection"
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2"
+          className="flex overflow-x-auto no-scrollbar sm:grid sm:grid-cols-3 lg:grid-cols-5 gap-2 pb-1 touch-pan-x -mx-1 px-1"
         >
           {PROFILES.map((p) => {
             const isSelected = selectedProfile === p.id;
@@ -129,7 +129,7 @@ export const AiHealthAssistant: React.FC<AiHealthAssistantProps> = ({
                 key={p.id}
                 type="button"
                 onClick={() => setSelectedProfile(p.id)}
-                className={`flex flex-col items-start p-2.5 rounded-xl border text-left transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 ${
+                className={`flex flex-col items-start p-3 rounded-xl border text-left transition-all shrink-0 min-w-[135px] sm:min-w-0 sm:shrink min-h-[44px] justify-center focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 ${
                   isSelected
                     ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm'
                     : 'bg-white text-slate-700 border-slate-200 hover:border-indigo-300 hover:bg-slate-50'

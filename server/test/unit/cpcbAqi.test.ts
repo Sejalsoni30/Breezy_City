@@ -62,12 +62,30 @@ describe('India CPCB NAQI - Sub-Index Boundary Calculations', () => {
     it('calculates sub-index in mg/m³ correctly', () => {
       expect(calculateSubIndex('carbon_monoxide', 0.5)).toEqual({ subIndex: 25, category: 'Good' });
       expect(calculateSubIndex('carbon_monoxide', 1.0)).toEqual({ subIndex: 50, category: 'Good' });
-      expect(calculateSubIndex('carbon_monoxide', 2.0)).toEqual({ subIndex: 100, category: 'Satisfactory' });
-      expect(calculateSubIndex('carbon_monoxide', 10.0)).toEqual({ subIndex: 200, category: 'Moderate' });
-      expect(calculateSubIndex('carbon_monoxide', 17.0)).toEqual({ subIndex: 300, category: 'Poor' });
-      expect(calculateSubIndex('carbon_monoxide', 34.0)).toEqual({ subIndex: 400, category: 'Very Poor' });
-      expect(calculateSubIndex('carbon_monoxide', 50.0)).toEqual({ subIndex: 500, category: 'Severe' });
-      expect(calculateSubIndex('carbon_monoxide', 65.0)).toEqual({ subIndex: 500, category: 'Severe' });
+      expect(calculateSubIndex('carbon_monoxide', 2.0)).toEqual({
+        subIndex: 100,
+        category: 'Satisfactory'
+      });
+      expect(calculateSubIndex('carbon_monoxide', 10.0)).toEqual({
+        subIndex: 200,
+        category: 'Moderate'
+      });
+      expect(calculateSubIndex('carbon_monoxide', 17.0)).toEqual({
+        subIndex: 300,
+        category: 'Poor'
+      });
+      expect(calculateSubIndex('carbon_monoxide', 34.0)).toEqual({
+        subIndex: 400,
+        category: 'Very Poor'
+      });
+      expect(calculateSubIndex('carbon_monoxide', 50.0)).toEqual({
+        subIndex: 500,
+        category: 'Severe'
+      });
+      expect(calculateSubIndex('carbon_monoxide', 65.0)).toEqual({
+        subIndex: 500,
+        category: 'Severe'
+      });
     });
   });
 
@@ -144,7 +162,7 @@ describe('CPCB National AQI Calculation Engine Rules', () => {
     // Delhi scenario: PM2.5 is high
     const res = calculateCpcbAqi({
       pm2_5: 95, // sub-index: 201 + (99/29)*4 ≈ 215 (Poor)
-      pm10: 80,  // sub-index: 80 (Satisfactory)
+      pm10: 80, // sub-index: 80 (Satisfactory)
       nitrogen_dioxide: 40, // sub-index: 50 (Good)
       ozone: 50, // sub-index: 50 (Good)
       carbon_monoxide: 1000 // 1.0 mg/m³ -> sub-index: 50 (Good)
@@ -160,7 +178,7 @@ describe('CPCB National AQI Calculation Engine Rules', () => {
   it('handles tied dominant pollutants correctly', () => {
     const res = calculateCpcbAqi({
       pm2_5: 30, // sub-index 50
-      pm10: 50,  // sub-index 50
+      pm10: 50, // sub-index 50
       nitrogen_dioxide: 40 // sub-index 50
     });
 

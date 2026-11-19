@@ -14,7 +14,9 @@ describe('AI Health Advisory Service', () => {
   it('generates personalized precautions for asthma profile in Poor AQI', async () => {
     const res = await generateAiHealthAdvisory(240, 'Poor', 'PM2.5', 'asthma');
     expect(res).toBeDefined();
-    expect(res.advice.toLowerCase()).toMatch(/(asthma|broncho|inhaler|respiratory|airway|mask|indoor)/);
+    expect(res.advice.toLowerCase()).toMatch(
+      /(asthma|broncho|inhaler|respiratory|airway|mask|indoor)/
+    );
     expect(res.recommendations.length).toBeGreaterThanOrEqual(2);
     expect(res.disclaimer).toContain('not medical advice');
   });

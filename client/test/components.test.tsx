@@ -120,7 +120,8 @@ const mockAqiData: AirQualityApiResponse = {
   metadata: {
     source: 'Open-Meteo Atmospheric Chemistry Model Grid',
     isModelEstimate: true,
-    dataNatureDisclosure: 'Modelled atmospheric reanalysis and forecast grid; not a physical ground monitoring station.',
+    dataNatureDisclosure:
+      'Modelled atmospheric reanalysis and forecast grid; not a physical ground monitoring station.',
     modelTime: '2026-11-16T14:00:00Z',
     fetchTime: '2026-11-16T14:35:00Z',
     dataState: 'Live'
@@ -209,7 +210,9 @@ describe('Client UI Component Tests', () => {
       render(<HealthGuidance guidance={mockAqiData.healthGuidance} category="Poor" />);
 
       // General guidance visible initially
-      expect(screen.getByText(/Causes breathing discomfort on prolonged outdoor exposure/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Causes breathing discomfort on prolonged outdoor exposure/i)
+      ).toBeInTheDocument();
 
       // Switch to Children tab
       const childrenTab = screen.getByRole('tab', { name: /Children & Youth/i });
@@ -237,7 +240,9 @@ describe('Client UI Component Tests', () => {
         />
       );
 
-      expect(screen.getByText(/Atmospheric Model Grid Estimate \(Not a Ground Station Sensor\)/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Atmospheric Model Grid Estimate \(Not a Ground Station Sensor\)/i)
+      ).toBeInTheDocument();
       expect(screen.getByText(/not a physical ground monitoring station/i)).toBeInTheDocument();
       expect(screen.getByText('Open-Meteo')).toBeInTheDocument();
     });
@@ -282,13 +287,7 @@ describe('Client UI Component Tests', () => {
 
   describe('AiHealthAssistant Component', () => {
     it('renders sensitive group profiles and disclaimers', () => {
-      render(
-        <AiHealthAssistant
-          aqi={285}
-          category="Poor"
-          dominantPollutant="PM2.5"
-        />
-      );
+      render(<AiHealthAssistant aqi={285} category="Poor" dominantPollutant="PM2.5" />);
 
       expect(screen.getByText(/Personalized AI Health Advisory/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Asthma/i })).toBeInTheDocument();
@@ -312,12 +311,7 @@ describe('Client UI Component Tests', () => {
   describe('NeighborhoodMap Component', () => {
     it('renders card header, zone filter buttons, and AQI color legend', () => {
       render(
-        <NeighborhoodMap
-          latitude={28.6139}
-          longitude={77.2090}
-          cityName="Delhi"
-          baseAqi={175}
-        />
+        <NeighborhoodMap latitude={28.6139} longitude={77.209} cityName="Delhi" baseAqi={175} />
       );
 
       // Card title and zone controls
@@ -340,12 +334,7 @@ describe('Client UI Component Tests', () => {
 
     it('allows switching between urban zones via interactive filter buttons', () => {
       render(
-        <NeighborhoodMap
-          latitude={28.6139}
-          longitude={77.2090}
-          cityName="Delhi"
-          baseAqi={175}
-        />
+        <NeighborhoodMap latitude={28.6139} longitude={77.209} cityName="Delhi" baseAqi={175} />
       );
 
       const northBtn = screen.getByRole('button', { name: /North/i });

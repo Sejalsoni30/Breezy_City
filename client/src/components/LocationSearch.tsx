@@ -216,7 +216,7 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
             aria-activedescendant={
               highlightedIndex >= 0 ? `location-option-${highlightedIndex}` : undefined
             }
-            className="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+            className="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all min-h-[44px]"
           />
 
           {/* Autocomplete Dropdown */}
@@ -224,7 +224,7 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
             <ul
               id="location-results-list"
               role="listbox"
-              className="absolute z-40 left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-xl shadow-lg max-h-64 overflow-y-auto divide-y divide-slate-100 focus:outline-none"
+              className="absolute z-40 left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-xl shadow-lg max-h-60 sm:max-h-64 overflow-y-auto divide-y divide-slate-100 focus:outline-none"
             >
               {results.map((item, index) => {
                 const isSelected = highlightedIndex === index;
@@ -236,14 +236,16 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
                     aria-selected={isSelected}
                     onClick={() => selectItem(item)}
                     onMouseEnter={() => setHighlightedIndex(index)}
-                    className={`px-4 py-3 flex items-start space-x-3 cursor-pointer text-xs transition-colors ${
+                    className={`px-4 py-3 flex items-start space-x-3 cursor-pointer text-xs transition-colors min-h-[44px] ${
                       isSelected ? 'bg-blue-50 text-blue-900' : 'text-slate-700 hover:bg-slate-50'
                     }`}
                   >
                     <MapPin className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" aria-hidden="true" />
-                    <div>
-                      <p className="font-semibold text-slate-900 text-sm">{item.name}</p>
-                      <p className="text-slate-500 mt-0.5">{item.displayName}</p>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-slate-900 text-sm truncate">{item.name}</p>
+                      <p className="text-slate-500 mt-0.5 break-words line-clamp-2">
+                        {item.displayName}
+                      </p>
                     </div>
                   </li>
                 );
@@ -264,7 +266,7 @@ export const LocationSearch: React.FC<LocationSearchProps> = ({
           onClick={handleUseMyLocation}
           disabled={isGeoLoading || isExternalLoading}
           aria-label="Use My Location via browser geolocation"
-          className="inline-flex items-center justify-center space-x-2 px-4 py-3 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-800 text-xs font-semibold rounded-xl border border-slate-200 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:opacity-60 shrink-0"
+          className="inline-flex items-center justify-center space-x-2 px-4 py-3 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-800 text-xs font-semibold rounded-xl border border-slate-200 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:opacity-60 shrink-0 min-h-[44px]"
         >
           {isGeoLoading ? (
             <Loader2 className="w-4 h-4 animate-spin text-blue-600" aria-hidden="true" />

@@ -3,22 +3,26 @@ import { AlertTriangle, WifiOff, RefreshCw, Search } from 'lucide-react';
 
 export const LoadingSkeleton: React.FC = () => {
   return (
-    <div className="space-y-6 animate-pulse" aria-busy="true" aria-label="Loading air quality data">
+    <div
+      className="space-y-4 sm:space-y-6 animate-pulse"
+      aria-busy="true"
+      aria-label="Loading air quality data"
+    >
       {/* Hero skeleton */}
-      <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between gap-6">
+      <div className="bg-white rounded-2xl p-4 sm:p-8 border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between gap-6">
         <div className="space-y-4 flex-1">
           <div className="h-4 bg-slate-200 rounded w-1/4"></div>
           <div className="h-8 bg-slate-200 rounded w-1/2"></div>
           <div className="h-4 bg-slate-200 rounded w-3/4"></div>
           <div className="h-4 bg-slate-200 rounded w-2/3"></div>
         </div>
-        <div className="h-32 w-32 bg-slate-200 rounded-2xl self-center shrink-0"></div>
+        <div className="h-28 w-28 sm:h-32 sm:w-32 bg-slate-200 rounded-2xl self-center shrink-0"></div>
       </div>
 
       {/* Grid skeletons */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="bg-white rounded-xl p-5 border border-slate-200 space-y-3">
+          <div key={i} className="bg-white rounded-xl p-4 sm:p-5 border border-slate-200 space-y-3">
             <div className="h-4 bg-slate-200 rounded w-1/3"></div>
             <div className="h-8 bg-slate-200 rounded w-1/2"></div>
             <div className="h-3 bg-slate-200 rounded w-2/3"></div>
@@ -38,7 +42,7 @@ export const ErrorBanner: React.FC<ErrorBannerProps> = ({ message, onRetry }) =>
   return (
     <div
       role="alert"
-      className="bg-red-50 border border-red-200 rounded-2xl p-6 text-red-900 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+      className="bg-red-50 border border-red-200 rounded-2xl p-4 sm:p-6 text-red-900 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
     >
       <div className="flex items-start space-x-3">
         <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" aria-hidden="true" />
@@ -50,7 +54,7 @@ export const ErrorBanner: React.FC<ErrorBannerProps> = ({ message, onRetry }) =>
       {onRetry && (
         <button
           onClick={onRetry}
-          className="inline-flex items-center space-x-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shrink-0"
+          className="inline-flex items-center space-x-1.5 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-xl shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 shrink-0 min-h-[44px]"
         >
           <RefreshCw className="w-3.5 h-3.5" aria-hidden="true" />
           <span>Try Again</span>

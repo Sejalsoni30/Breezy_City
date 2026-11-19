@@ -87,7 +87,9 @@ describe('API Server Integration Tests', { timeout: 15000 }, () => {
 
       // Verify data nature disclosure (mandatory: model estimate, not station)
       expect(res.body.metadata.isModelEstimate).toBe(true);
-      expect(res.body.metadata.dataNatureDisclosure).toContain('not a physical ground monitoring station');
+      expect(res.body.metadata.dataNatureDisclosure).toContain(
+        'not a physical ground monitoring station'
+      );
       expect(res.body.metadata.dataState).toBe('Live');
     });
 
@@ -103,7 +105,9 @@ describe('API Server Integration Tests', { timeout: 15000 }, () => {
     });
 
     it('supports US EPA standard calculation when standard=US_EPA is requested', async () => {
-      const res = await request(app).get('/api/air-quality?lat=28.6139&lon=77.2090&standard=US_EPA');
+      const res = await request(app).get(
+        '/api/air-quality?lat=28.6139&lon=77.2090&standard=US_EPA'
+      );
       expect(res.status).toBe(200);
       expect(res.body.standard).toBe('US_EPA');
       expect(res.body.standardName).toContain('US EPA');
@@ -155,14 +159,12 @@ describe('API Server Integration Tests', { timeout: 15000 }, () => {
 
   describe('POST /api/ai/advisory', () => {
     it('generates personalized health advisory with guardrails', async () => {
-      const res = await request(app)
-        .post('/api/ai/advisory')
-        .send({
-          aqi: 245,
-          category: 'Poor',
-          dominantPollutant: 'PM2.5',
-          userProfile: 'asthma'
-        });
+      const res = await request(app).post('/api/ai/advisory').send({
+        aqi: 245,
+        category: 'Poor',
+        dominantPollutant: 'PM2.5',
+        userProfile: 'asthma'
+      });
 
       expect(res.status).toBe(200);
       expect(res.body).toHaveProperty('advice');
@@ -173,13 +175,11 @@ describe('API Server Integration Tests', { timeout: 15000 }, () => {
     });
 
     it('validates schema input strictly', async () => {
-      const res = await request(app)
-        .post('/api/ai/advisory')
-        .send({
-          aqi: 9999, // invalid aqi > 500
-          category: 'Hazardous',
-          dominantPollutant: 'PM2.5'
-        });
+      const res = await request(app).post('/api/ai/advisory').send({
+        aqi: 9999, // invalid aqi > 500
+        category: 'Hazardous',
+        dominantPollutant: 'PM2.5'
+      });
 
       expect(res.status).toBe(400);
     });
@@ -190,15 +190,13 @@ describe('API Server Integration Tests', { timeout: 15000 }, () => {
 
     it('creates, retrieves, and deletes user bookmarks', async () => {
       // Create bookmark
-      const createRes = await request(app)
-        .post('/api/bookmarks')
-        .send({
-          userId: 'test-user-1',
-          name: 'Delhi',
-          displayName: 'Delhi, India',
-          latitude: 28.6139,
-          longitude: 77.2090
-        });
+      const createRes = await request(app).post('/api/bookmarks').send({
+        userId: 'test-user-1',
+        name: 'Delhi',
+        displayName: 'Delhi, India',
+        latitude: 28.6139,
+        longitude: 77.209
+      });
 
       expect(createRes.status).toBe(201);
       expect(createRes.body).toHaveProperty('id');
@@ -221,13 +219,9 @@ describe('API Server Integration Tests', { timeout: 15000 }, () => {
     });
 
     it('records and retrieves search history with deduplication', async () => {
-      await request(app)
-        .post('/api/history')
-        .send({ userId: 'test-user-2', query: 'Mumbai' });
+      await request(app).post('/api/history').send({ userId: 'test-user-2', query: 'Mumbai' });
 
-      await request(app)
-        .post('/api/history')
-        .send({ userId: 'test-user-2', query: 'Bengaluru' });
+      await request(app).post('/api/history').send({ userId: 'test-user-2', query: 'Bengaluru' });
 
       const res = await request(app).get('/api/history?userId=test-user-2');
       expect(res.status).toBe(200);
@@ -238,9 +232,7 @@ describe('API Server Integration Tests', { timeout: 15000 }, () => {
 
   describe('CORS and Security boundaries', () => {
     it('blocks disallowed external origins', async () => {
-      const res = await request(app)
-        .get('/api/health')
-        .set('Origin', 'http://malicious-site.com');
+      const res = await request(app).get('/api/health').set('Origin', 'http://malicious-site.com');
 
       expect(res.status).toBe(403);
       expect(res.body.message).toContain('CORS');

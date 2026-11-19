@@ -20,13 +20,13 @@ export const Header: React.FC<HeaderProps> = ({ activeStandard, onStandardChange
         Skip to main content
       </a>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md">
-            <Wind className="w-6 h-6" aria-hidden="true" />
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2">
+        <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shrink-0">
+            <Wind className="w-4 h-4 sm:w-6 sm:h-6" aria-hidden="true" />
           </div>
-          <div>
-            <h1 className="text-lg font-bold text-slate-900 leading-tight">
+          <div className="min-w-0">
+            <h1 className="text-sm xs:text-base sm:text-lg font-bold text-slate-900 leading-tight truncate">
               Urban Air Quality Assistant
             </h1>
             <p className="text-xs text-slate-500 hidden sm:block">
@@ -36,18 +36,21 @@ export const Header: React.FC<HeaderProps> = ({ activeStandard, onStandardChange
         </div>
 
         {/* Standard Switch Toggle (CPCB vs US EPA) */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center shrink-0">
           <label htmlFor="standard-select" className="sr-only">
             Select Air Quality Index Standard
           </label>
-          <div className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium text-slate-700">
-            <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" aria-hidden="true" />
-            <span className="hidden sm:inline font-semibold">Standard:</span>
+          <div className="flex items-center space-x-1 sm:space-x-1.5 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium text-slate-700 min-h-[36px] sm:min-h-[40px]">
+            <ShieldCheck
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 shrink-0"
+              aria-hidden="true"
+            />
+            <span className="hidden md:inline font-semibold">Standard:</span>
             <select
               id="standard-select"
               value={activeStandard}
               onChange={(e) => onStandardChange(e.target.value as 'CPCB' | 'US_EPA')}
-              className="bg-transparent font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded cursor-pointer"
+              className="bg-transparent font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded cursor-pointer text-xs"
             >
               <option value="CPCB">India CPCB (NAQI)</option>
               <option value="US_EPA">US EPA (2024 Revised)</option>

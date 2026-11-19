@@ -87,13 +87,13 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
   return (
     <section
       aria-labelledby="trends-heading"
-      className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-5"
+      className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200 shadow-sm space-y-4 sm:space-y-5"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
         <div>
           <h2
             id="trends-heading"
-            className="text-xl font-bold text-slate-900 flex items-center space-x-2"
+            className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2"
           >
             <span>Air Quality Trajectory & 24h Forecast</span>
           </h2>
@@ -102,12 +102,12 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
           </p>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-wrap items-center gap-2">
           {getDirectionBadge()}
           <button
             type="button"
             onClick={() => setShowDataTable(!showDataTable)}
-            className="inline-flex items-center space-x-1 px-3 py-1 rounded-lg text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="inline-flex items-center space-x-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-700 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[34px]"
             aria-expanded={showDataTable}
             aria-controls="accessible-trends-table"
           >
@@ -118,10 +118,10 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
       </div>
 
       {/* Accessible Text Summary (WCAG requirement) */}
-      <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
+      <div className="p-3.5 sm:p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
         <p className="font-semibold text-slate-900 mb-1">Accessible Trajectory Summary:</p>
         <p>{summary.accessibleSummary}</p>
-        <div className="mt-2 flex flex-wrap gap-4 text-slate-600">
+        <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-slate-600">
           <span>
             Minimum AQI: <strong>{summary.minAqi ?? '--'}</strong>
           </span>
@@ -136,7 +136,7 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
 
       {/* Chart View or Data Table Alternative */}
       {!showDataTable ? (
-        <div className="h-72 w-full pt-2" aria-hidden="true">
+        <div className="h-60 sm:h-72 w-full pt-2" aria-hidden="true">
           <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -177,7 +177,7 @@ export const TrendsChart: React.FC<TrendsChartProps> = ({ history, forecast, sum
       ) : (
         <div
           id="accessible-trends-table"
-          className="overflow-x-auto max-h-72 border border-slate-200 rounded-xl"
+          className="overflow-x-auto touch-pan-x max-h-72 border border-slate-200 rounded-xl"
         >
           <table className="min-w-full divide-y divide-slate-200 text-xs text-left">
             <thead className="bg-slate-50 sticky top-0">

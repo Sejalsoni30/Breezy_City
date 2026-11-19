@@ -38,15 +38,15 @@ export const WeatherContext: React.FC<WeatherContextProps> = ({ weather }) => {
   return (
     <section
       aria-labelledby="weather-heading"
-      className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4"
+      className="bg-white rounded-2xl p-4 sm:p-6 lg:p-8 border border-slate-200 shadow-sm space-y-3 sm:space-y-4"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-4">
         <div>
           <h2
             id="weather-heading"
-            className="text-xl font-bold text-slate-900 flex items-center space-x-2"
+            className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2"
           >
-            <CloudSun className="w-5 h-5 text-sky-600" aria-hidden="true" />
+            <CloudSun className="w-5 h-5 text-sky-600 shrink-0" aria-hidden="true" />
             <span>Meteorological Context</span>
           </h2>
           <p className="text-xs text-slate-500">
@@ -55,55 +55,57 @@ export const WeatherContext: React.FC<WeatherContextProps> = ({ weather }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Temperature */}
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
-          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-2">
-            <Thermometer className="w-4 h-4 text-rose-500" aria-hidden="true" />
+        <div className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-200/80">
+          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-1.5">
+            <Thermometer className="w-4 h-4 text-rose-500 shrink-0" aria-hidden="true" />
             <span>Temperature</span>
           </div>
-          <div className="text-2xl font-bold text-slate-900">
+          <div className="text-xl sm:text-2xl font-bold text-slate-900">
             {weather.temperature !== null
               ? `${weather.temperature}${weather.temperatureUnit}`
               : '--'}
           </div>
-          <p className="text-[11px] text-slate-500 mt-1 capitalize">{weather.weatherDescription}</p>
+          <p className="text-[11px] text-slate-500 mt-1 capitalize truncate">
+            {weather.weatherDescription}
+          </p>
         </div>
 
         {/* Humidity */}
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
-          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-2">
-            <Droplets className="w-4 h-4 text-blue-500" aria-hidden="true" />
+        <div className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-200/80">
+          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-1.5">
+            <Droplets className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
             <span>Relative Humidity</span>
           </div>
-          <div className="text-2xl font-bold text-slate-900">
+          <div className="text-xl sm:text-2xl font-bold text-slate-900">
             {weather.humidity !== null ? `${weather.humidity}${weather.humidityUnit}` : '--'}
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">Water vapor saturation</p>
+          <p className="text-[11px] text-slate-500 mt-1 truncate">Water vapor saturation</p>
         </div>
 
         {/* Wind Speed */}
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
-          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-2">
-            <Wind className="w-4 h-4 text-teal-500" aria-hidden="true" />
+        <div className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-200/80">
+          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-1.5">
+            <Wind className="w-4 h-4 text-teal-500 shrink-0" aria-hidden="true" />
             <span>Wind Speed (10m)</span>
           </div>
-          <div className="text-2xl font-bold text-slate-900">
+          <div className="text-xl sm:text-2xl font-bold text-slate-900">
             {weather.windSpeed !== null ? `${weather.windSpeed} ${weather.windSpeedUnit}` : '--'}
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">Surface ventilation factor</p>
+          <p className="text-[11px] text-slate-500 mt-1 truncate">Surface ventilation factor</p>
         </div>
 
         {/* Wind Direction */}
-        <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
-          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-2">
-            <Compass className="w-4 h-4 text-indigo-500" aria-hidden="true" />
+        <div className="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-200/80">
+          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold mb-1.5">
+            <Compass className="w-4 h-4 text-indigo-500 shrink-0" aria-hidden="true" />
             <span>Wind Direction</span>
           </div>
-          <div className="text-2xl font-bold text-slate-900 truncate">
+          <div className="text-xl sm:text-2xl font-bold text-slate-900 truncate">
             {getWindDirectionLabel(weather.windDirection)}
           </div>
-          <p className="text-[11px] text-slate-500 mt-1">Dispersion vector</p>
+          <p className="text-[11px] text-slate-500 mt-1 truncate">Dispersion vector</p>
         </div>
       </div>
 

@@ -182,21 +182,21 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
   return (
     <section
       aria-labelledby="map-section-title"
-      className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-6 space-y-4"
+      className="bg-white/90 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-xs p-4 sm:p-6 space-y-3 sm:space-y-4"
     >
       {/* Header with Title and Zone Filter Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div className="flex items-center space-x-2.5">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
             <Compass className="w-5 h-5" aria-hidden="true" />
           </div>
           <div>
             <h2
               id="map-section-title"
-              className="text-lg font-bold text-slate-900 flex items-center gap-1.5"
+              className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-1.5"
             >
               <span>Neighborhood Air Quality Heatmap</span>
-              <Layers className="w-4 h-4 text-emerald-500" aria-hidden="true" />
+              <Layers className="w-4 h-4 text-emerald-500 shrink-0" aria-hidden="true" />
             </h2>
             <p className="text-xs text-slate-600">
               Interactive GIS overlay displaying micro-climate sensor nodes across {cityName}
@@ -205,12 +205,15 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
         </div>
 
         {/* Zone Filter Pill Switch */}
-        <div className="flex items-center space-x-1.5">
-          <Filter className="w-3.5 h-3.5 text-slate-500 hidden sm:inline" aria-hidden="true" />
+        <div className="flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
+          <Filter
+            className="w-3.5 h-3.5 text-slate-500 hidden sm:inline shrink-0"
+            aria-hidden="true"
+          />
           <div
             role="group"
             aria-label="City zone filter"
-            className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 overflow-x-auto max-w-full"
+            className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50 overflow-x-auto no-scrollbar max-w-full"
           >
             {ZONES.map((zone) => {
               const isActive = selectedZone === zone;
@@ -219,7 +222,7 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
                   key={zone}
                   type="button"
                   onClick={() => setSelectedZone(zone)}
-                  className={`px-2.5 py-1 text-xs font-semibold rounded-md transition-all shrink-0 focus:outline-none focus:ring-1 focus:ring-emerald-500 ${
+                  className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-all shrink-0 min-h-[34px] flex items-center focus:outline-none focus:ring-1 focus:ring-emerald-500 ${
                     isActive
                       ? 'bg-white text-emerald-700 shadow-2xs'
                       : 'text-slate-600 hover:text-slate-900'
@@ -239,22 +242,22 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 animate-in fade-in duration-200"
+          className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 animate-in fade-in duration-200"
         >
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 min-w-0">
             <span
-              className="w-2.5 h-2.5 rounded-full inline-block"
+              className="w-2.5 h-2.5 rounded-full inline-block shrink-0"
               style={{ backgroundColor: selectedNode.color }}
               aria-hidden="true"
             />
-            <span className="font-semibold text-slate-900">{selectedNode.name}</span>
-            <span className="text-slate-500">({selectedNode.zone} Sector)</span>
+            <span className="font-semibold text-slate-900 truncate">{selectedNode.name}</span>
+            <span className="text-slate-500 shrink-0">({selectedNode.zone} Sector)</span>
           </div>
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 shrink-0">
             <span>
               AQI: <strong style={{ color: selectedNode.color }}>{selectedNode.aqi}</strong>
             </span>
-            <span className="hidden sm:inline">
+            <span className="hidden xs:inline">
               PM2.5: <strong>{selectedNode.pm25} µg/m³</strong>
             </span>
             <span className="text-slate-400">|</span>
@@ -264,7 +267,7 @@ export const NeighborhoodMap: React.FC<NeighborhoodMapProps> = ({
       )}
 
       {/* Map Canvas Container */}
-      <div className="relative w-full h-[360px] sm:h-[400px] rounded-xl overflow-hidden border border-slate-200/80 shadow-inner bg-slate-100">
+      <div className="relative w-full h-[260px] xs:h-[300px] sm:h-[360px] md:h-[400px] rounded-xl overflow-hidden border border-slate-200/80 shadow-inner bg-slate-100">
         <div
           ref={mapContainerRef}
           className="w-full h-full z-0"

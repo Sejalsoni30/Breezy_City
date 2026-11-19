@@ -80,21 +80,21 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
   return (
     <section
       aria-labelledby="historical-trends-title"
-      className="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 sm:p-6 space-y-5"
+      className="bg-white rounded-2xl border border-slate-200 shadow-xs p-4 sm:p-6 space-y-4 sm:space-y-5"
     >
       {/* Header and Interval Tabs */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
         <div className="flex items-center space-x-2.5">
-          <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
             <TrendingUp className="w-5 h-5" aria-hidden="true" />
           </div>
           <div>
             <h2
               id="historical-trends-title"
-              className="text-lg font-bold text-slate-900 flex items-center gap-1.5"
+              className="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-1.5"
             >
               <span>Historical AQI Trends & Analytics</span>
-              <Sparkles className="w-3.5 h-3.5 text-blue-500" aria-hidden="true" />
+              <Sparkles className="w-3.5 h-3.5 text-blue-500 shrink-0" aria-hidden="true" />
             </h2>
             <p className="text-xs text-slate-600">
               Interactive multi-day atmospheric particulate history and daily mean AQI progression
@@ -103,7 +103,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
         </div>
 
         {/* 7-Day vs 30-Day Toggle & Table View Toggle */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div
             role="group"
             aria-label="Trend duration interval"
@@ -112,7 +112,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
             <button
               type="button"
               onClick={() => setDays(7)}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors min-h-[34px] flex items-center ${
                 days === 7
                   ? 'bg-white text-blue-700 shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -124,7 +124,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
             <button
               type="button"
               onClick={() => setDays(30)}
-              className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors min-h-[34px] flex items-center ${
                 days === 30
                   ? 'bg-white text-blue-700 shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -140,17 +140,17 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
             onClick={() => setShowTable((prev) => !prev)}
             aria-expanded={showTable}
             aria-controls="historical-data-table"
-            className="inline-flex items-center px-2.5 py-1 text-xs font-medium border border-slate-200 rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="inline-flex items-center px-3 py-1.5 text-xs font-medium border border-slate-200 rounded-lg text-slate-700 bg-white hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[34px]"
             title="Toggle Accessible Data Table"
           >
-            <TableIcon className="w-3.5 h-3.5 mr-1 text-slate-500" aria-hidden="true" />
+            <TableIcon className="w-3.5 h-3.5 mr-1 text-slate-500 shrink-0" aria-hidden="true" />
             <span>{showTable ? 'Chart View' : 'Table View'}</span>
           </button>
         </div>
       </div>
 
       {/* KPI Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
         <div className="bg-slate-50 rounded-xl p-3 border border-slate-200/80">
           <div className="text-[11px] font-semibold text-slate-600 uppercase tracking-wide">
             Lowest (Cleanest) AQI
@@ -189,8 +189,11 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
         </div>
       ) : showTable ? (
         /* WCAG Accessible Data Table */
-        <div id="historical-data-table" className="overflow-x-auto">
-          <table className="min-w-full text-xs text-left border-collapse border border-slate-200">
+        <div
+          id="historical-data-table"
+          className="overflow-x-auto touch-pan-x rounded-xl border border-slate-200"
+        >
+          <table className="min-w-full text-xs text-left border-collapse">
             <caption className="sr-only">
               Historical air quality data for the past {days} days
             </caption>
@@ -221,7 +224,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
                     idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'
                   }`}
                 >
-                  <td className="px-3 py-2 font-medium text-slate-900 border-r border-slate-200">
+                  <td className="px-3 py-2 font-medium text-slate-900 border-r border-slate-200 whitespace-nowrap">
                     {row.date}
                   </td>
                   <td className="px-3 py-2 font-bold text-blue-700 border-r border-slate-200">
@@ -247,7 +250,7 @@ export const HistoricalTrends: React.FC<HistoricalTrendsProps> = ({ latitude, lo
           role="region"
           aria-label="Historical AQI Trend Chart"
           tabIndex={0}
-          className="w-full h-72 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded-lg"
+          className="w-full h-60 sm:h-72 focus:outline-none focus:ring-1 focus:ring-blue-500 rounded-lg"
         >
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={series} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>

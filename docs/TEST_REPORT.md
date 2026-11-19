@@ -1,28 +1,30 @@
 # Verification & Test Report
+
 **Project**: Urban Air Quality Assistant  
 **Challenge**: [Challenge 6] Hack2Skill Prompt Wars  
 **Primary AQI Standard**: India CPCB (National Air Quality Index - NAQI, Oct 2014)  
 **Date**: November 2026  
-**Status**: All Tests Passed (100% Verification)  
+**Status**: All Tests Passed (100% Verification)
 
 ---
 
 ## 1. Test Summary
 
-| Test Category | Framework / Tool | Scope | Passed | Failed | Status |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **AQI Mathematical Unit Tests** | Vitest | CPCB Breakpoints, Formulas, Unit Conversions, Minimum Pollutants Rule | 18 | 0 | **PASS** |
-| **Server Integration Tests** | Supertest + Express | Routes (`/api/*`), Historical Trends, AI Advisory, Database Bookmarks, History, Cache, CORS | 18 | 0 | **PASS** |
-| **Client Component Tests** | Vitest + React Testing Library | AqiHero, PollutantGrid, HealthGuidance, LocationSearch, DataAttribution, GlobalErrorBoundary, AiHealthAssistant, HistoricalTrends | 8 | 0 | **PASS** |
-| **Automated Accessibility** | `@axe-core/playwright` | WCAG 2.0 A/AA & WCAG 2.1 A/AA Compliance Scan | 0 violations | 0 | **PASS** |
-| **End-to-End & Visual Walkthrough** | Playwright (Chrome) | Responsive Viewports (360px, 768px, 1280px), Search, Tabs, Offline, Error, AI Profiles, Trends Analytics | 14 states | 0 | **PASS** |
-| **Total Automated Tests** | | | **44 tests + 14 E2E states** | **0** | **PASS** |
+| Test Category                       | Framework / Tool               | Scope                                                                                                                             | Passed                       | Failed | Status   |
+| :---------------------------------- | :----------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- | :----- | :------- |
+| **AQI Mathematical Unit Tests**     | Vitest                         | CPCB Breakpoints, Formulas, Unit Conversions, Minimum Pollutants Rule                                                             | 18                           | 0      | **PASS** |
+| **Server Integration Tests**        | Supertest + Express            | Routes (`/api/*`), Historical Trends, AI Advisory, Database Bookmarks, History, Cache, CORS                                       | 18                           | 0      | **PASS** |
+| **Client Component Tests**          | Vitest + React Testing Library | AqiHero, PollutantGrid, HealthGuidance, LocationSearch, DataAttribution, GlobalErrorBoundary, AiHealthAssistant, HistoricalTrends | 8                            | 0      | **PASS** |
+| **Automated Accessibility**         | `@axe-core/playwright`         | WCAG 2.0 A/AA & WCAG 2.1 A/AA Compliance Scan                                                                                     | 0 violations                 | 0      | **PASS** |
+| **End-to-End & Visual Walkthrough** | Playwright (Chrome)            | Responsive Viewports (360px, 768px, 1280px), Search, Tabs, Offline, Error, AI Profiles, Trends Analytics                          | 14 states                    | 0      | **PASS** |
+| **Total Automated Tests**           |                                |                                                                                                                                   | **44 tests + 14 E2E states** | **0**  | **PASS** |
 
 ---
 
 ## 2. Detailed Test Suites
 
 ### 2.1 India CPCB NAQI Calculation Engine (`server/test/unit/cpcbAqi.test.ts`)
+
 - **PM2.5 Breakpoints**:
   - `0 µg/m³` $\to$ Sub-index `0` (Good)
   - `30 µg/m³` $\to$ Sub-index `50` (Good)
@@ -44,6 +46,7 @@
   - Dominant pollutant calculation and tied maximum handling verified.
 
 ### 2.2 Server Integration Suite (`server/test/integration/api.test.ts`)
+
 - `GET /api/health`: 200 OK + Helmet security headers (`x-content-type-options: nosniff`, `x-frame-options: SAMEORIGIN`).
 - `GET /api/geocode`:
   - Verified valid geocoding for "Delhi" with disambiguation.
@@ -58,6 +61,7 @@
 - `CORS boundary`: Disallowed external origin receives `403 Forbidden`.
 
 ### 2.3 Client Component Suite (`client/test/components.test.tsx`)
+
 - `AqiHero`: Verified location name, prominent AQI value, category badge, and dominant pollutant.
 - `PollutantGrid`: Verified cards for 6 pollutants, unit labels, sub-indices, and graceful handling of missing pollutants.
 - `HealthGuidance`: Verified category guidance, sensitive group tabs (Children, Elderly, Asthma, Heart), checklist, and mandatory medical disclaimer.
@@ -65,6 +69,7 @@
 - `LocationSearch`: Verified accessible input and "Use My Location" button.
 
 ### 2.4 End-to-End & Axe Accessibility Walkthrough (`scripts/verifyAndScreenshot.mjs`)
+
 - Tested against live server using headless Google Chrome (`C:\Program Files\Google\Chrome\Application\chrome.exe`).
 - **Axe-Core Scan**: **0 violations** detected against WCAG 2.0 A, AA and WCAG 2.1 A, AA.
 - **Viewports Tested & Verified**:
@@ -86,6 +91,7 @@
 ## 3. QA Debug Loop & Fixes Applied
 
 During automated Axe scanning, 4 accessibility findings were detected and resolved:
+
 1. **`aria-allowed-attr`**: Added `role="combobox"` to `#location-search-input` to support `aria-expanded` and `aria-controls`.
 2. **`label-content-name-mismatch`**: Updated geolocation button `aria-label` to `"Use My Location via browser geolocation"` so visible button text is included in the accessible name (WCAG 2.5.3).
 3. **`color-contrast`**: Replaced `text-slate-400` ($2.56:1$ contrast) on pollutant descriptions with `text-slate-600` ($>4.5:1$ contrast against white background).
